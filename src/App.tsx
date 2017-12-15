@@ -1,8 +1,8 @@
 import * as React from 'react';
-import './App.css';
 import { ChangeEvent } from 'react';
 import UserInput from './UserInput/UserInput';
 import UserOutput from './UserOutput/UserOutput';
+import * as styles from './App.css'
 
 const logo = require('./logo.svg');
 
@@ -18,12 +18,12 @@ class App extends React.Component<{}, { userName: string }> {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className={styles.App}>
+        <div className={styles.AppHeader}>
+          <img src={logo} className={styles.AppLogo} alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
+        <p className={styles.AppIntro}>
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
         <UserOutput userName={this.state.userName}/>
