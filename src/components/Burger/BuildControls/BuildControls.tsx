@@ -5,6 +5,7 @@ import BuildControl from './BuildControl/BuildControl';
 
 interface Props {
   ingredientAdded: (type: BurgerIngredientType) => void;
+  ingredientRemoved: (type: BurgerIngredientType) => void;
 }
 
 interface Control {
@@ -25,6 +26,7 @@ const buildControls: React.SFC<Props> = props => (
       key={ctrl.label + ctrl.type}
       label={ctrl.label}
       added={() => props.ingredientAdded(ctrl.type)}
+      removed={() => props.ingredientRemoved(ctrl.type)}
     />))}
   </div>
 );
