@@ -1,12 +1,27 @@
 import * as React from 'react';
-import Burger from '../../components/Burger/Burger';
+import Burger, { Ingredient } from '../../components/Burger/Burger';
+import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
+import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 
-class BurgerBuilder extends React.Component {
+interface State {
+  ingredients: Ingredient[];
+}
+
+class BurgerBuilder extends React.Component<{}, State> {
+  state = {
+    ingredients: [
+      {type: BurgerIngredientType.Meat, amount: 1},
+      {type: BurgerIngredientType.Cheese, amount: 1},
+      {type: BurgerIngredientType.Bacon, amount: 1},
+      {type: BurgerIngredientType.Salad, amount: 1},
+    ]
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Burger/>
-        <div>Build Controls</div>
+        <Burger ingredients={this.state.ingredients}/>
+        <BuildControls />
       </React.Fragment>
     );
   }
