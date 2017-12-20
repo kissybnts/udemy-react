@@ -1,34 +1,27 @@
 import * as React from 'react';
 import * as styles from './Burger.css';
-import BurgerIngredient, { BurgerIngredientType } from './BurgerIngredient/BurgerIngredient';
+import BurgerIngredient, { BurgerIngredientTypes } from './BurgerIngredient/BurgerIngredient';
+import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 
 interface Props {
-  ingredients: Ingredient[];
-}
-
-export interface Ingredient {
-  type: BurgerIngredientType;
-  amount: number;
+  ingredients: Ingredients;
 }
 
 const burger: React.SFC<Props> = props => {
-  let ingredients = props.ingredients.map((elem, index) => {
-    return Array.from(Array(elem.amount).keys()).map((_, subIndex) => {
-      return <BurgerIngredient type={elem.type} key={elem.type + index + subIndex} />;
-    });
-  }).reduce((arr, el) => {
-    return arr.concat(el);
-  }, []);
+  let ingredients = Object.keys(props.ingredients).map((value, index) => {
+    return Array.from(Array(props.ingredients[value]))
+      .map((_, subIndex) => (<BurgerIngredient key={value + '_' + index + '_' + subIndex} type={BurgerIngredientTypes[value]}/>));
+  }).reduce((arr, elem) => arr.concat(elem), []);
 
-  if (ingredients.length == 0) {
+  if (ingredients.length === 0) {
     ingredients.push(<p key={'empty_ingredients'}>Please start adding ingredients!</p>);
   }
 
   return (
     <div className={styles.Burger}>
-      <BurgerIngredient type={BurgerIngredientType.BreadTop} />
+      <BurgerIngredient type={BurgerIngredientTypes.BreadTop} />
       {ingredients}
-      <BurgerIngredient type={BurgerIngredientType.BreadBottom} />
+      <BurgerIngredient type={BurgerIngredientTypes.BreadBottom} />
     </div>
   );
 };

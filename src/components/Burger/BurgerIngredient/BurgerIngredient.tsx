@@ -6,15 +6,29 @@ interface Props {
   type: BurgerIngredientType
 }
 
-export enum BurgerIngredientType {
-  BreadTop, BreadBottom, Meat, Cheese, Bacon, Salad
+export type BurgerIngredientType = 'BreadTop' | 'BreadBottom' | 'Meat' | 'Cheese' | 'Bacon' | 'Salad';
+
+export namespace BurgerIngredientTypes {
+  export const BreadTop: BurgerIngredientType = 'BreadTop';
+  export const BreadBottom: BurgerIngredientType = 'BreadBottom';
+  export const Meat: BurgerIngredientType = 'Meat';
+  export const Cheese: BurgerIngredientType = 'Cheese';
+  export const Bacon: BurgerIngredientType = 'Bacon';
+  export const Salad: BurgerIngredientType = 'Salad';
 }
+
+// export interface P {
+//   type: BurgerIngredientType;
+//   amount: number;
+//   unitPrice: number;
+//   label: string;
+// }
 
 const burgerIngredient: React.SFC<Props> = (props: Props) => {
   let ingredient: ReactElement<any> | null = null;
 
   switch (props.type) {
-    case (BurgerIngredientType.BreadTop):
+    case (BurgerIngredientTypes.BreadTop):
       ingredient = (
         <div className={styles.BreadTop}>
           <div className={styles.Seeds1}/>
@@ -22,19 +36,19 @@ const burgerIngredient: React.SFC<Props> = (props: Props) => {
         </div>
       );
       break;
-    case (BurgerIngredientType.BreadBottom):
+    case (BurgerIngredientTypes.BreadBottom):
       ingredient = <div className={styles.BreadBottom} />;
       break;
-    case (BurgerIngredientType.Meat):
+    case (BurgerIngredientTypes.Meat):
       ingredient = <div className={styles.Meat} />;
       break;
-    case (BurgerIngredientType.Cheese):
+    case (BurgerIngredientTypes.Cheese):
       ingredient = <div className={styles.Cheese} />;
       break;
-    case (BurgerIngredientType.Bacon):
+    case (BurgerIngredientTypes.Bacon):
       ingredient = <div className={styles.Bacon} />;
       break;
-    case (BurgerIngredientType.Salad):
+    case (BurgerIngredientTypes.Salad):
       ingredient = <div className={styles.Salad} />;
       break;
     default:
