@@ -10,10 +10,10 @@ interface State {
 class BurgerBuilder extends React.Component<{}, State> {
   state = {
     ingredients: [
-      {type: BurgerIngredientType.Meat, amount: 1},
-      {type: BurgerIngredientType.Cheese, amount: 1},
-      {type: BurgerIngredientType.Bacon, amount: 1},
-      {type: BurgerIngredientType.Salad, amount: 1},
+      {type: BurgerIngredientType.Meat, amount: 0},
+      {type: BurgerIngredientType.Cheese, amount: 0},
+      {type: BurgerIngredientType.Bacon, amount: 0},
+      {type: BurgerIngredientType.Salad, amount: 0},
     ]
   };
 
