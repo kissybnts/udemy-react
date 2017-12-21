@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Ingredients } from '../../../containers/BurgerBuilder/BurgerBuilder';
+import Button from '../../UI/Button/Button';
 
 interface Props {
   ingredients: Ingredients;
+  purchaseCanceled: () => void;
+  purchaseContinued: () => void;
 }
 
 const orderSummary: React.SFC<Props> = props => {
@@ -17,6 +20,8 @@ const orderSummary: React.SFC<Props> = props => {
       {summary}
     </ul>
     <p>Continue to Checkout?</p>
+    <Button type={'Danger'} clicked={props.purchaseCanceled}>CANCEL</Button>
+    <Button type={'Success'} clicked={props.purchaseContinued}>CANCEL</Button>
   </React.Fragment>)
 };
 
