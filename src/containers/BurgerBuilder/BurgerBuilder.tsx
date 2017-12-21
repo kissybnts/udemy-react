@@ -6,6 +6,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 interface State {
   ingredients: Ingredients;
   totalPrice: number;
+  purchasable: boolean;
 }
 
 const INGREDIENT_PRICE = {
@@ -30,8 +31,16 @@ class BurgerBuilder extends React.Component<{}, State> {
       Bacon: 0,
       Salad: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchasable: false
   };
+
+  private updatePurchasable(ingredients: Ingredients) {
+    const sum = Object.keys(ingredients)
+      .map(key => ingredients[key])
+      .reduce((sum, elem) => sum + elem, 0);
+    this.setState({ purchasable: sum > 0 });
+  }
 
   addIngredientHandler = (type: BurgerIngredientType) => {
     const oldAmount = this.state.ingredients[type];
@@ -42,6 +51,7 @@ class BurgerBuilder extends React.Component<{}, State> {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+    this.updatePurchasable(updatedIngredients);
   };
 
   removeIngredientHandler = (type: BurgerIngredientType) => {
@@ -54,6 +64,7 @@ class BurgerBuilder extends React.Component<{}, State> {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+    this.updatePurchasable(updatedIngredients);
   };
 
   render() {
@@ -70,6 +81,7 @@ class BurgerBuilder extends React.Component<{}, State> {
           ingredientRemoved={this.removeIngredientHandler}
           disabledInfo={disabledInfo}
           price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
         />
       </React.Fragment>
     );
