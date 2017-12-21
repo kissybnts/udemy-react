@@ -6,6 +6,7 @@ interface Props {
   ingredients: Ingredients;
   purchaseCanceled: () => void;
   purchaseContinued: () => void;
+  price: number;
 }
 
 const orderSummary: React.SFC<Props> = props => {
@@ -19,9 +20,10 @@ const orderSummary: React.SFC<Props> = props => {
     <ul>
       {summary}
     </ul>
+    <p><strong>Total Price: {props.price.toFixed(2)}</strong></p>
     <p>Continue to Checkout?</p>
     <Button type={'Danger'} clicked={props.purchaseCanceled}>CANCEL</Button>
-    <Button type={'Success'} clicked={props.purchaseContinued}>CANCEL</Button>
+    <Button type={'Success'} clicked={props.purchaseContinued}>CONTINUE</Button>
   </React.Fragment>)
 };
 
