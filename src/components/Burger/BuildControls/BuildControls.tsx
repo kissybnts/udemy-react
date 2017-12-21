@@ -7,6 +7,7 @@ interface Props {
   ingredientAdded: (type: BurgerIngredientType) => void;
   ingredientRemoved: (type: BurgerIngredientType) => void;
   disabledInfo: { [key: string] : boolean };
+  price: number;
 }
 
 interface Control {
@@ -23,6 +24,7 @@ const controls: Control[] = [
 
 const buildControls: React.SFC<Props> = props => (
   <div className={styles.BuildControls}>
+    <p>Current price: <strong>{props.price.toFixed(2)}</strong></p>
     {controls.map(ctrl => (<BuildControl
       key={ctrl.label + ctrl.type}
       label={ctrl.label}
