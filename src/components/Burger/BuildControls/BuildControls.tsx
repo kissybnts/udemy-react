@@ -9,6 +9,7 @@ interface Props {
   disabledInfo: { [key: string] : boolean };
   price: number;
   purchasable: boolean;
+  ordered: () => void;
 }
 
 interface Control {
@@ -36,6 +37,7 @@ const buildControls: React.SFC<Props> = props => (
     <button
       className={styles.OrderButton}
       disabled={!props.purchasable}
+      onClick={props.ordered}
     >ORDER NOW</button>
   </div>
 );

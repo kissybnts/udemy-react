@@ -11,8 +11,8 @@ const orderSummary: React.SFC<Props> = props => {
   ));
 
   return (<React.Fragment>
-    <h3>Order Summary</h3>
-    <p>Delicious burger will be served with following ingredients</p>
+    <h3>Your Order</h3>
+    <p>A Delicious burger will be served with the following ingredients:</p>
     <ul>
       {summary}
     </ul>

@@ -9,6 +9,7 @@ interface State {
   ingredients: Ingredients;
   totalPrice: number;
   purchasable: boolean;
+  purchasing: boolean;
 }
 
 const INGREDIENT_PRICE = {
@@ -34,7 +35,8 @@ class BurgerBuilder extends React.Component<{}, State> {
       Salad: 0
     },
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    purchasing: false
   };
 
   private updatePurchasable(ingredients: Ingredients) {
@@ -69,6 +71,10 @@ class BurgerBuilder extends React.Component<{}, State> {
     this.updatePurchasable(updatedIngredients);
   };
 
+  purchasingHandler = () => {
+    this.setState({ purchasing: true });
+  };
+
   render() {
     let disabledInfo: { [key: string] : boolean } = {};
     Object.keys(this.state.ingredients).forEach((key) => {
@@ -77,7 +83,7 @@ class BurgerBuilder extends React.Component<{}, State> {
 
     return (
       <React.Fragment>
-        <Modal>
+        <Modal show={this.state.purchasing}>
           <OrderSummary ingredients={this.state.ingredients}/>
         </Modal>
         <Burger ingredients={this.state.ingredients}/>
@@ -87,6 +93,7 @@ class BurgerBuilder extends React.Component<{}, State> {
           disabledInfo={disabledInfo}
           price={this.state.totalPrice}
           purchasable={this.state.purchasable}
+          ordered={this.purchasingHandler}
         />
       </React.Fragment>
     );
