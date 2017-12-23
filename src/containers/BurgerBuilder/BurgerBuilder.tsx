@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Burger from '../../components/Burger/Burger';
-import {BurgerIngredientType} from '../../components/Burger/BurgerIngredient/BurgerIngredient';
+import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
@@ -39,13 +39,6 @@ class BurgerBuilder extends React.Component<{}, State> {
     purchasing: false
   };
 
-  private updatePurchasable(ingredients: Ingredients) {
-    const sum = Object.keys(ingredients)
-      .map(key => ingredients[key])
-      .reduce((sum, elem) => sum + elem, 0);
-    this.setState({purchasable: sum > 0});
-  }
-
   addIngredientHandler = (type: BurgerIngredientType) => {
     const oldAmount = this.state.ingredients[type];
     const updatedAmount = oldAmount + 1;
@@ -54,7 +47,7 @@ class BurgerBuilder extends React.Component<{}, State> {
     const priceAddition = INGREDIENT_PRICE[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
-    this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
+    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
     this.updatePurchasable(updatedIngredients);
   };
 
@@ -69,16 +62,16 @@ class BurgerBuilder extends React.Component<{}, State> {
     const priceDeduction = INGREDIENT_PRICE[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
-    this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
+    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
     this.updatePurchasable(updatedIngredients);
   };
 
   purchaseHandler = () => {
-    this.setState({purchasing: true});
+    this.setState({ purchasing: true });
   };
 
   purchaseCancelHandler = () => {
-    this.setState({purchasing: false});
+    this.setState({ purchasing: false });
   };
 
   purchaseContinueHandler = () => {
@@ -112,6 +105,13 @@ class BurgerBuilder extends React.Component<{}, State> {
         />
       </React.Fragment>
     );
+  }
+
+  private updatePurchasable(ingredients: Ingredients) {
+    const sum = Object.keys(ingredients)
+      .map(key => ingredients[key])
+      .reduce((total, elem) => total + elem, 0);
+    this.setState({ purchasable: sum > 0 });
   }
 }
 

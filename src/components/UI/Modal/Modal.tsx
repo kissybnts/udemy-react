@@ -7,19 +7,27 @@ interface Props {
   modalClosed: () => void;
 }
 
-const modal: React.SFC<Props> = props => (
-  <React.Fragment>
-    <Backdrop
-      show={props.show}
-      clicked={props.modalClosed}
-    />
-    <div
-      className={cssClasses.Modal}
-      style={{transform: props.show ? 'translateY(0)' : 'translateY(-100vh)', opacity: props.show ? 1 : 0}}
-    >
-      {props.children}
-    </div>
-  </React.Fragment>
-);
+class Modal extends React.Component<Props, {}> {
+  shouldComponentUpdate(nextProps: Props): boolean {
+    return nextProps.show !== this.props.show;
+  }
 
-export default modal;
+  render() {
+    return (
+      <React.Fragment>
+        <Backdrop
+          show={this.props.show}
+          clicked={this.props.modalClosed}
+        />
+        <div
+          className={cssClasses.Modal}
+          style={{transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)', opacity: this.props.show ? 1 : 0}}
+        >
+          {this.props.children}
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+export default Modal;
