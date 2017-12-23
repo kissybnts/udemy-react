@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as styles from './BuildControl.css';
+import * as cssClasses from './BuildControl.css';
 
 interface Props {
   label: string;
@@ -9,10 +9,10 @@ interface Props {
 }
 
 const buildControl: React.SFC<Props> = props => (
-  <div className={styles.BuildControl}>
-    <div className={styles.Label}>{props.label}</div>
-    <button className={styles.Less} onClick={props.removed} disabled={props.disabled}>Less</button>
-    <button className={styles.More} onClick={props.added}>More</button>
+  <div className={cssClasses.BuildControl}>
+    <div className={cssClasses.Label}>{props.label}</div>
+    <button className={cssClasses.Less} onClick={props.removed} disabled={props.disabled}>Less</button>
+    <button className={cssClasses.More} onClick={props.added}>More</button>
   </div>
 );
 

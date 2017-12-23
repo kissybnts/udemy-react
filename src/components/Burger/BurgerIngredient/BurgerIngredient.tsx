@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import * as styles from './BurgerIngredient.css';
+import * as cssClasses from './BurgerIngredient.css';
 
 interface Props {
-  type: BurgerIngredientType
+  type: BurgerIngredientType;
 }
 
 export type BurgerIngredientType = 'BreadTop' | 'BreadBottom' | 'Meat' | 'Cheese' | 'Bacon' | 'Salad';
@@ -17,39 +17,32 @@ export namespace BurgerIngredientTypes {
   export const Salad: BurgerIngredientType = 'Salad';
 }
 
-// export interface P {
-//   type: BurgerIngredientType;
-//   amount: number;
-//   unitPrice: number;
-//   label: string;
-// }
-
 const burgerIngredient: React.SFC<Props> = (props: Props) => {
-  let ingredient: ReactElement<any> | null = null;
+  let ingredient: ReactElement<HTMLDivElement> | null = null;
 
   switch (props.type) {
     case (BurgerIngredientTypes.BreadTop):
       ingredient = (
-        <div className={styles.BreadTop}>
-          <div className={styles.Seeds1}/>
-          <div className={styles.Seeds2}/>
+        <div className={cssClasses.BreadTop}>
+          <div className={cssClasses.Seeds1}/>
+          <div className={cssClasses.Seeds2}/>
         </div>
       );
       break;
     case (BurgerIngredientTypes.BreadBottom):
-      ingredient = <div className={styles.BreadBottom}/>;
+      ingredient = <div className={cssClasses.BreadBottom}/>;
       break;
     case (BurgerIngredientTypes.Meat):
-      ingredient = <div className={styles.Meat}/>;
+      ingredient = <div className={cssClasses.Meat}/>;
       break;
     case (BurgerIngredientTypes.Cheese):
-      ingredient = <div className={styles.Cheese}/>;
+      ingredient = <div className={cssClasses.Cheese}/>;
       break;
     case (BurgerIngredientTypes.Bacon):
-      ingredient = <div className={styles.Bacon}/>;
+      ingredient = <div className={cssClasses.Bacon}/>;
       break;
     case (BurgerIngredientTypes.Salad):
-      ingredient = <div className={styles.Salad}/>;
+      ingredient = <div className={cssClasses.Salad}/>;
       break;
     default:
       break;

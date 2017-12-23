@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as styles from './Burger.css';
+import * as cssClasses from './Burger.css';
 import BurgerIngredient, { BurgerIngredientTypes } from './BurgerIngredient/BurgerIngredient';
 import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 
@@ -18,7 +18,7 @@ const burger: React.SFC<Props> = props => {
   }
 
   return (
-    <div className={styles.Burger}>
+    <div className={cssClasses.Burger}>
       <BurgerIngredient type={BurgerIngredientTypes.BreadTop}/>
       {ingredients}
       <BurgerIngredient type={BurgerIngredientTypes.BreadBottom}/>

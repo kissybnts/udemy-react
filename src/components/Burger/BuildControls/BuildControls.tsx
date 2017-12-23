@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as styles from './BuildControls.css';
+import * as cssClasses from './BuildControls.css';
 import { BurgerIngredientType, BurgerIngredientTypes } from '../BurgerIngredient/BurgerIngredient';
 import BuildControl from './BuildControl/BuildControl';
 
@@ -25,7 +25,7 @@ const controls: Control[] = [
 ];
 
 const buildControls: React.SFC<Props> = props => (
-  <div className={styles.BuildControls}>
+  <div className={cssClasses.BuildControls}>
     <p>Current price: <strong>{props.price.toFixed(2)}</strong></p>
     {controls.map(ctrl => (<BuildControl
       key={ctrl.label + ctrl.type}
@@ -35,7 +35,7 @@ const buildControls: React.SFC<Props> = props => (
       disabled={props.disabledInfo[ctrl.type]}
     />))}
     <button
-      className={styles.OrderButton}
+      className={cssClasses.OrderButton}
       disabled={!props.purchasable}
       onClick={props.ordered}
     >ORDER NOW
