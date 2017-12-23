@@ -9,17 +9,21 @@ interface State {
 
 class Layout extends React.Component<{}, State> {
   state = {
-    showSideDrawer: true
+    showSideDrawer: false
   };
 
   sideDrawerClosedHandler = () => {
     this.setState({ showSideDrawer: false });
   };
 
+  sideDrawerToggleHandler = () => {
+    this.setState(prevState => ({ showSideDrawer: !prevState.showSideDrawer }));
+  };
+
   render() {
     return (
       <React.Fragment>
-        <Toolbar/>
+        <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler}/>
         <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler}/>
         <main className={styles.Content}>
           {this.props.children}
