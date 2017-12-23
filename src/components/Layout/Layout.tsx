@@ -3,14 +3,30 @@ import * as styles from './Layout.css';
 import Toolbar from '../Navigation/Toolbar/Toolbar';
 import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
-const layout: React.SFC = props => (
-  <React.Fragment>
-    <Toolbar/>
-    <SideDrawer/>
-    <main className={styles.Content}>
-      {props.children}
-    </main>
-  </React.Fragment>
-);
+interface State {
+  showSideDrawer: boolean;
+}
 
-export default layout;
+class Layout extends React.Component<{}, State> {
+  state = {
+    showSideDrawer: true
+  };
+
+  sideDrawerClosedHandler = () => {
+    this.setState({ showSideDrawer: false });
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <Toolbar/>
+        <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerClosedHandler}/>
+        <main className={styles.Content}>
+          {this.props.children}
+        </main>
+      </React.Fragment>
+    );
+  }
+}
+
+export default Layout;
