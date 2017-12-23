@@ -6,9 +6,11 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 const toolbar: React.SFC = props => (
   <header className={cssClasses.Toolbar}>
     <div>MENU</div>
-    <Logo/>
+    <div className={cssClasses.Logo}>
+      <Logo/>
+    </div>
     <nav>
-        <NavigationItems />
+      <NavigationItems/>
     </nav>
   </header>
 );
