@@ -14,6 +14,6 @@ const button: React.SFC<Props> = props => (
     onClick={props.clicked}
   >
     {props.children}
-    </button>);
+  </button>);
 
 export default button;

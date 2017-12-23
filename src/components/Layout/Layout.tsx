@@ -5,8 +5,8 @@ import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 const layout: React.SFC = props => (
   <React.Fragment>
-    <Toolbar />
-    <SideDrawer />
+    <Toolbar/>
+    <SideDrawer/>
     <main className={styles.Content}>
       {props.children}
     </main>

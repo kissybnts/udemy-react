@@ -7,6 +7,6 @@ interface Props {
 }
 
 const backdrop: React.SFC<Props> = props => props.show ?
-  (<div className={cssClasses.Backdrop} onClick={props.clicked} />) : null;
+  (<div className={cssClasses.Backdrop} onClick={props.clicked}/>) : null;
 
 export default backdrop;

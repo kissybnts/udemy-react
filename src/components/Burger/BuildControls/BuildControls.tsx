@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as styles from './BuildControls.css';
-import { BurgerIngredientType, BurgerIngredientTypes } from '../BurgerIngredient/BurgerIngredient';
+import {BurgerIngredientType, BurgerIngredientTypes} from '../BurgerIngredient/BurgerIngredient';
 import BuildControl from './BuildControl/BuildControl';
 
 interface Props {
   ingredientAdded: (type: BurgerIngredientType) => void;
   ingredientRemoved: (type: BurgerIngredientType) => void;
-  disabledInfo: { [key: string] : boolean };
+  disabledInfo: { [key: string]: boolean };
   price: number;
   purchasable: boolean;
   ordered: () => void;
@@ -18,10 +18,10 @@ interface Control {
 }
 
 const controls: Control[] = [
-  { label: 'Salad', type: BurgerIngredientTypes.Salad },
-  { label: 'Bacon', type: BurgerIngredientTypes.Bacon },
-  { label: 'Cheese', type: BurgerIngredientTypes.Cheese },
-  { label: 'Meat', type: BurgerIngredientTypes.Meat }
+  {label: 'Salad', type: BurgerIngredientTypes.Salad},
+  {label: 'Bacon', type: BurgerIngredientTypes.Bacon},
+  {label: 'Cheese', type: BurgerIngredientTypes.Cheese},
+  {label: 'Meat', type: BurgerIngredientTypes.Meat}
 ];
 
 const buildControls: React.SFC<Props> = props => (
@@ -38,7 +38,8 @@ const buildControls: React.SFC<Props> = props => (
       className={styles.OrderButton}
       disabled={!props.purchasable}
       onClick={props.ordered}
-    >ORDER NOW</button>
+    >ORDER NOW
+    </button>
   </div>
 );
 

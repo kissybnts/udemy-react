@@ -1,6 +1,6 @@
 import * as React from 'react';
+import {ReactElement} from 'react';
 import * as styles from './BurgerIngredient.css';
-import { ReactElement } from 'react';
 
 interface Props {
   type: BurgerIngredientType
@@ -37,19 +37,19 @@ const burgerIngredient: React.SFC<Props> = (props: Props) => {
       );
       break;
     case (BurgerIngredientTypes.BreadBottom):
-      ingredient = <div className={styles.BreadBottom} />;
+      ingredient = <div className={styles.BreadBottom}/>;
       break;
     case (BurgerIngredientTypes.Meat):
-      ingredient = <div className={styles.Meat} />;
+      ingredient = <div className={styles.Meat}/>;
       break;
     case (BurgerIngredientTypes.Cheese):
-      ingredient = <div className={styles.Cheese} />;
+      ingredient = <div className={styles.Cheese}/>;
       break;
     case (BurgerIngredientTypes.Bacon):
-      ingredient = <div className={styles.Bacon} />;
+      ingredient = <div className={styles.Bacon}/>;
       break;
     case (BurgerIngredientTypes.Salad):
-      ingredient = <div className={styles.Salad} />;
+      ingredient = <div className={styles.Salad}/>;
       break;
     default:
       break;

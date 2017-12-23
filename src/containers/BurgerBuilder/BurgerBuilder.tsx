@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Burger from '../../components/Burger/Burger';
-import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
+import {BurgerIngredientType} from '../../components/Burger/BurgerIngredient/BurgerIngredient';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
@@ -43,7 +43,7 @@ class BurgerBuilder extends React.Component<{}, State> {
     const sum = Object.keys(ingredients)
       .map(key => ingredients[key])
       .reduce((sum, elem) => sum + elem, 0);
-    this.setState({ purchasable: sum > 0 });
+    this.setState({purchasable: sum > 0});
   }
 
   addIngredientHandler = (type: BurgerIngredientType) => {
@@ -54,29 +54,31 @@ class BurgerBuilder extends React.Component<{}, State> {
     const priceAddition = INGREDIENT_PRICE[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
-    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+    this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
     this.updatePurchasable(updatedIngredients);
   };
 
   removeIngredientHandler = (type: BurgerIngredientType) => {
     const oldAmount = this.state.ingredients[type];
-    if (oldAmount <= 0) { return }
+    if (oldAmount <= 0) {
+      return;
+    }
     const updatedAmount = oldAmount - 1;
     const updatedIngredients = Object.assign(this.state.ingredients);
     updatedIngredients[type] = updatedAmount;
     const priceDeduction = INGREDIENT_PRICE[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
-    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+    this.setState({ingredients: updatedIngredients, totalPrice: newPrice});
     this.updatePurchasable(updatedIngredients);
   };
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    this.setState({purchasing: true});
   };
 
   purchaseCancelHandler = () => {
-    this.setState({ purchasing: false });
+    this.setState({purchasing: false});
   };
 
   purchaseContinueHandler = () => {
@@ -84,7 +86,7 @@ class BurgerBuilder extends React.Component<{}, State> {
   };
 
   render() {
-    let disabledInfo: { [key: string] : boolean } = {};
+    let disabledInfo: { [key: string]: boolean } = {};
     Object.keys(this.state.ingredients).forEach((key) => {
       disabledInfo[key] = this.state.ingredients[key] <= 0;
     });

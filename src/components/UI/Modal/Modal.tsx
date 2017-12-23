@@ -15,7 +15,7 @@ const modal: React.SFC<Props> = props => (
     />
     <div
       className={cssClasses.Modal}
-      style={{ transform: props.show ? 'translateY(0)' : 'translateY(-100vh)', opacity: props.show ? 1 : 0 }}
+      style={{transform: props.show ? 'translateY(0)' : 'translateY(-100vh)', opacity: props.show ? 1 : 0}}
     >
       {props.children}
     </div>
