@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as styles from './Burger.css';
-import BurgerIngredient, {BurgerIngredientTypes} from './BurgerIngredient/BurgerIngredient';
-import {Ingredients} from '../../containers/BurgerBuilder/BurgerBuilder';
+import BurgerIngredient, { BurgerIngredientTypes } from './BurgerIngredient/BurgerIngredient';
+import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 
 interface Props {
   ingredients: Ingredients;

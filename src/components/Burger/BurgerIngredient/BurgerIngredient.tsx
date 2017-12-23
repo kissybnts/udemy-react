@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ReactElement} from 'react';
+import { ReactElement } from 'react';
 import * as styles from './BurgerIngredient.css';
 
 interface Props {
