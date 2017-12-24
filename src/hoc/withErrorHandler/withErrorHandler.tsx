@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 import Modal from '../../components/UI/Modal/Modal';
 
 interface State {
-  error?: any;
+  error: any;
 }
 
 const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
@@ -12,15 +12,24 @@ const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
       error: null
     };
 
+    reqInterceptor: number;
+    resInterceptor: number;
+
     componentWillMount() {
-      axios.interceptors.request.use(req => {
+      this.reqInterceptor = axios.interceptors.request.use(req => {
         this.setState({ error: null });
         return req;
-      }, error => error);
+      });
 
-      axios.interceptors.response.use(req => req, error => {
+      this.resInterceptor = axios.interceptors.response.use(req => req, error => {
         this.setState({ error: error });
       });
+    }
+
+    componentWillUnmount() {
+      // Clean up the interceptors
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     errorConfirmedHandler = () => {
@@ -40,7 +49,7 @@ const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
         </React.Fragment>
       );
     }
-  }
+  };
 };
 
 export default withErrorHandler;
