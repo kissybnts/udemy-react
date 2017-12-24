@@ -10,12 +10,23 @@ interface State {
 class Checkout extends React.Component<RouteComponentProps<{}>, State> {
   state = {
     ingredients: {
-      Salad: 1,
-      Meat: 1,
       Bacon: 1,
-      Cheese: 1
+      Cheese: 1,
+      Meat: 1,
+      Salad: 1
     }
   };
+
+  componentDidMount() {
+    const query = this.parseUrlParams(this.props.location.search.toString());
+    const ingredients = Object.assign(this.state.ingredients);
+    query.forEach((value, key) => {
+      if (ingredients[key] !== undefined) {
+        ingredients[key] = +value;
+      }
+    });
+    this.setState({ ingredients: ingredients });
+  }
 
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
@@ -35,6 +46,15 @@ class Checkout extends React.Component<RouteComponentProps<{}>, State> {
         />
       </div>
     );
+  }
+
+  private parseUrlParams(query: string): Map<string, string> {
+    const params = query.split('?')[1];
+    return params.split('&').reduce((previousValue, currentValue) => {
+      let components = currentValue.split('=');
+      previousValue.set(components[0], components[1]);
+      return previousValue;
+    }, new Map<string, string>());
   }
 }
 
