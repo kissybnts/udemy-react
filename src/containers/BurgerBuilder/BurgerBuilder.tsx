@@ -7,6 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { RouteComponentProps } from 'react-router';
 
 interface State {
   ingredients?: Ingredients;
@@ -31,7 +32,7 @@ export interface Ingredients {
   Salad: number;
 }
 
-class BurgerBuilder extends React.Component<{}, State> {
+class BurgerBuilder extends React.Component<RouteComponentProps<{}>, State> {
   state = {
     ingredients: undefined,
     totalPrice: 4,
@@ -94,28 +95,7 @@ class BurgerBuilder extends React.Component<{}, State> {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Masataka Kishida',
-        address: {
-          zipCode: '1000000',
-          country: 'Japan'
-        },
-        email: 'email@example.com'
-      },
-      deliveryMethod: 'fastest'
-    };
-    axios.post('/orders.json', order)
-      .then(response => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(error => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    this.props.history.push('/checkout');
   };
 
   render() {
