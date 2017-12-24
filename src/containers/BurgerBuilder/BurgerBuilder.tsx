@@ -9,11 +9,12 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 interface State {
-  ingredients: Ingredients;
+  ingredients?: Ingredients;
   totalPrice: number;
   purchasable: boolean;
   purchasing: boolean;
   loading: boolean;
+  error: boolean;
 }
 
 const INGREDIENT_PRICE = {
@@ -32,43 +33,56 @@ export interface Ingredients {
 
 class BurgerBuilder extends React.Component<{}, State> {
   state = {
-    ingredients: {
-      Meat: 0,
-      Cheese: 0,
-      Bacon: 0,
-      Salad: 0
-    },
+    ingredients: undefined,
     totalPrice: 4,
     purchasable: false,
     purchasing: false,
-    loading: false
+    loading: false,
+    error: false
   };
 
+  componentDidMount() {
+    axios.get('/ingredients.json')
+      .then(req => {
+        this.setState({ ingredients: { ...req.data }});
+      }).catch(error => {
+        this.setState({ error: true })
+      });
+  }
+
   addIngredientHandler = (type: BurgerIngredientType) => {
-    const oldAmount = this.state.ingredients[type];
-    const updatedAmount = oldAmount + 1;
-    const updatedIngredients = Object.assign(this.state.ingredients);
-    updatedIngredients[type] = updatedAmount;
-    const priceAddition = INGREDIENT_PRICE[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice + priceAddition;
-    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-    this.updatePurchasable(updatedIngredients);
+    const ingredients = this.state.ingredients;
+
+    if (ingredients !== undefined) {
+      const oldAmount = ingredients[type];
+      const updatedAmount = oldAmount + 1;
+      const updatedIngredients = Object.assign(ingredients);
+      updatedIngredients[type] = updatedAmount;
+      const priceAddition = INGREDIENT_PRICE[type];
+      const oldPrice = this.state.totalPrice;
+      const newPrice = oldPrice + priceAddition;
+      this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+      this.updatePurchasable(updatedIngredients);
+    }
   };
 
   removeIngredientHandler = (type: BurgerIngredientType) => {
-    const oldAmount = this.state.ingredients[type];
-    if (oldAmount <= 0) {
-      return;
+    const ingredients = this.state.ingredients;
+
+    if (ingredients !== undefined) {
+      const oldAmount = ingredients[type];
+      if (oldAmount <= 0) {
+        return;
+      }
+      const updatedAmount = oldAmount - 1;
+      const updatedIngredients = Object.assign(ingredients);
+      updatedIngredients[type] = updatedAmount;
+      const priceDeduction = INGREDIENT_PRICE[type];
+      const oldPrice = this.state.totalPrice;
+      const newPrice = oldPrice - priceDeduction;
+      this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
+      this.updatePurchasable(updatedIngredients);
     }
-    const updatedAmount = oldAmount - 1;
-    const updatedIngredients = Object.assign(this.state.ingredients);
-    updatedIngredients[type] = updatedAmount;
-    const priceDeduction = INGREDIENT_PRICE[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice - priceDeduction;
-    this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-    this.updatePurchasable(updatedIngredients);
   };
 
   purchaseHandler = () => {
@@ -105,17 +119,41 @@ class BurgerBuilder extends React.Component<{}, State> {
   };
 
   render() {
-    let disabledInfo: { [key: string]: boolean } = {};
-    Object.keys(this.state.ingredients).forEach((key) => {
-      disabledInfo[key] = this.state.ingredients[key] <= 0;
-    });
+    const ingredients = this.state.ingredients;
 
-    let orderSummary = <OrderSummary
-      ingredients={this.state.ingredients}
-      purchaseCanceled={this.purchaseCancelHandler}
-      purchaseContinued={this.purchaseContinueHandler}
-      price={this.state.totalPrice}
-    />;
+    let burger = this.state.error ? <p>Ingredients can't load!</p> : <Spinner/>;
+    let orderSummary = null;
+
+    if (ingredients !== undefined) {
+      let disabledInfo: { [key: string]: boolean } = {};
+      Object.keys(ingredients).forEach((key) => {
+        const ing = ingredients;
+        if (ing !== undefined) {
+          disabledInfo[key] = ing[key] <= 0;
+        }
+      });
+
+      burger = (
+        <React.Fragment>
+          <Burger ingredients={ingredients}/>
+          <BuildControls
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+            disabledInfo={disabledInfo}
+            price={this.state.totalPrice}
+            purchasable={this.state.purchasable}
+            ordered={this.purchaseHandler}
+          />
+        </React.Fragment>
+      );
+
+      orderSummary = <OrderSummary
+        ingredients={ingredients}
+        purchaseCanceled={this.purchaseCancelHandler}
+        purchaseContinued={this.purchaseContinueHandler}
+        price={this.state.totalPrice}
+      />;
+    }
 
     if (this.state.loading) {
       orderSummary = <Spinner/>
@@ -126,15 +164,7 @@ class BurgerBuilder extends React.Component<{}, State> {
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
           {orderSummary}
         </Modal>
-        <Burger ingredients={this.state.ingredients}/>
-        <BuildControls
-          ingredientAdded={this.addIngredientHandler}
-          ingredientRemoved={this.removeIngredientHandler}
-          disabledInfo={disabledInfo}
-          price={this.state.totalPrice}
-          purchasable={this.state.purchasable}
-          ordered={this.purchaseHandler}
-        />
+        {burger}
       </React.Fragment>
     );
   }
