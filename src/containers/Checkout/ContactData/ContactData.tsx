@@ -34,18 +34,22 @@ class ContactData extends React.Component<Props, State> {
 
   orderedHandler = (event: MouseEvent) => {
     event.preventDefault();
-    console.log(this.props);
     const data = {
       ingredients: { ...this.props.ingredients },
-      address: { ...this.state.address },
+      customer: {
+        address: { ...this.state.address },
+        name: this.state.name,
+        email: this.state.email
+      },
+      deliveryMethod: 'shortest',
       totalPrice: this.props.price
     };
-    axios.post('/order.json', data)
+    axios.post('/orders.json', data)
       .then(response => {
         this.props.history.push('/');
       }).catch(error => {
-      console.log(error);
-    });
+        console.log(error);
+      });
   };
 
   render () {
