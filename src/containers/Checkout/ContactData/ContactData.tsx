@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 import { Ingredients } from '../../BurgerBuilder/BurgerBuilder';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -55,10 +56,10 @@ class ContactData extends React.Component<Props, State> {
   render () {
     let form = (
       <form>
-        <input className={cssClasses.Input} type="text" name="name" placeholder="Your Name"/>
-        <input className={cssClasses.Input} type="email" name="email" placeholder="Your Email"/>
-        <input className={cssClasses.Input} type="text" name="street" placeholder="Street"/>
-        <input className={cssClasses.Input} type="text" name="postalCode" placeholder="Postal Code"/>
+        <Input inputType={'input'} label={'Name'} attributes={{type: "text", name: "name", placeholder: "Your Name"}}/>
+        <Input inputType={'input'} label={'Email'} attributes={{type: "email", name: "email", placeholder: "Your Email"}}/>
+        <Input inputType={'input'} label={'Street'} attributes={{type: "text", name: "street", placeholder: "Street"}}/>
+        <Input inputType={'input'} label={'Postal Code'} attributes={{type: "text", name: "postalCode", placeholder: "Postal Code"}}/>
         <Button clicked={this.orderedHandler} type={'Success'}>ORDER</Button>
       </form>
     );
