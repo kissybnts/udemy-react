@@ -27,7 +27,7 @@ interface Order {
 }
 
 class Orders extends React.Component<RouteComponentProps<{}>, State> {
-  state = {
+  state: State = {
     orders: [],
     loading: true
   };
@@ -42,9 +42,7 @@ class Orders extends React.Component<RouteComponentProps<{}>, State> {
           }
         });
 
-        console.log(orders);
-
-        this.setState({ loading: false });
+        this.setState({ loading: false, orders: orders });
       })
       .catch(error => {
         this.setState({ loading: false });
@@ -52,10 +50,12 @@ class Orders extends React.Component<RouteComponentProps<{}>, State> {
   }
 
   render() {
+    const orders = this.state.orders.map(order => (
+      <Order key={order.id} ingredients={order.ingredients} price={+order.totalPrice}/>
+    ));
     return (
       <div className={cssClasses.Orders}>
-        <Order/>
-        <Order/>
+        {orders}
       </div>
     );
   }
