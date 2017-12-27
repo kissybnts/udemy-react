@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 import { Ingredients } from '../../BurgerBuilder/BurgerBuilder';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
-import Input from '../../../components/UI/Input/Input';
+import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -14,22 +14,81 @@ interface Props extends RouteComponentProps<{}> {
 
 interface State {
   loading: boolean;
-  name: string;
-  email: string;
-  address: {
-    street: string;
-    postalCode: string;
+  form: {
+    name: ElementInfo;
+    email: ElementInfo;
+    country: ElementInfo;
+    street: ElementInfo;
+    zipCode: ElementInfo;
+    deliveryMethod: ElementInfo;
   }
+}
+
+interface ElementInfo {
+  elementType: InputType;
+  elementConfig: any;
+  value: string;
 }
 
 class ContactData extends React.Component<Props, State> {
   state = {
     loading: false,
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: ''
+    form: {
+      name: {
+        elementType: InputTypes.Input,
+        elementConfig: {
+          type: 'text',
+          name: 'name',
+          placeholder: 'Your Name'
+        },
+        value: ''
+      },
+      email: {
+        elementType: InputTypes.Input,
+        elementConfig: {
+          type: 'email',
+          name: 'email',
+          placeholder: 'Your E-Mail'
+        },
+        value: ''
+      },
+      country: {
+        elementType: InputTypes.Input,
+        elementConfig: {
+          type: 'text',
+          name: 'country',
+          placeholder: 'Country'
+        },
+        value: ''
+      },
+      street: {
+        elementType: InputTypes.Input,
+        elementConfig: {
+          type: 'text',
+          name: 'street',
+          placeholder: 'Street'
+        },
+        value: ''
+      },
+      zipCode: {
+        elementType: InputTypes.Input,
+        elementConfig: {
+          type: 'text',
+          name: 'zipCode',
+          placeholder: 'ZIP Code'
+        },
+        value: ''
+      },
+      deliveryMethod: {
+        elementType: InputTypes.Select,
+        elementConfig: {
+          options: [
+            { value: 'fastest', label: 'Fastest' },
+            { value: 'cheapest', label: 'Cheapest' }
+          ]
+        },
+        value: 'fastest'
+      }
     }
   };
 
@@ -37,11 +96,6 @@ class ContactData extends React.Component<Props, State> {
     event.preventDefault();
     const data = {
       ingredients: { ...this.props.ingredients },
-      customer: {
-        address: { ...this.state.address },
-        name: this.state.name,
-        email: this.state.email
-      },
       deliveryMethod: 'shortest',
       totalPrice: this.props.price
     };
@@ -54,12 +108,11 @@ class ContactData extends React.Component<Props, State> {
   };
 
   render () {
+    const inputs = Object.keys(this.state.form).map(key => <Input key={key} inputType={this.state.form[key].elementType} attributes={this.state.form[key].elementConfig} value={this.state.form[key].value}/>)
+
     let form = (
       <form>
-        <Input inputType={'input'} label={'Name'} attributes={{type: "text", name: "name", placeholder: "Your Name"}}/>
-        <Input inputType={'input'} label={'Email'} attributes={{type: "email", name: "email", placeholder: "Your Email"}}/>
-        <Input inputType={'input'} label={'Street'} attributes={{type: "text", name: "street", placeholder: "Street"}}/>
-        <Input inputType={'input'} label={'Postal Code'} attributes={{type: "text", name: "postalCode", placeholder: "Postal Code"}}/>
+        {inputs}
         <Button clicked={this.orderedHandler} type={'Success'}>ORDER</Button>
       </form>
     );

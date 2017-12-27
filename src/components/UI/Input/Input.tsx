@@ -1,23 +1,38 @@
 import * as React from 'react';
 import * as cssClasses from './Input.css';
 
-type InputType = 'input' | 'textarea';
+export type InputType = 'input' | 'textarea' | 'select';
 
 interface Props {
   inputType: InputType;
-  label: string;
+  label?: string;
   attributes: any;
+  value: string;
+}
+
+export namespace InputTypes {
+  export const Input: InputType = 'input';
+  export const Textarea: InputType = 'textarea';
+  export const Select: InputType = 'select';
 }
 
 const input: React.SFC<Props> = props => {
   let inputElement = null;
 
   switch (props.inputType) {
-    case 'input':
-      inputElement = <input className={cssClasses.InputElement} {...props.attributes} />;
+    case InputTypes.Input:
+      inputElement = <input className={cssClasses.InputElement} {...props.attributes} value={props.value} />;
       break;
-    case 'textarea':
-      inputElement = <textarea className={cssClasses.InputElement} {...props.attributes} />;
+    case InputTypes.Textarea:
+      inputElement = <textarea className={cssClasses.InputElement} {...props.attributes} value={props.value} />;
+      break;
+    case InputTypes.Select:
+      const options: { value: string, label: string }[] = props.attributes['options'];
+      inputElement = (
+        <select className={cssClasses.InputElement} name={props.label} id="" value={props.value}>
+          {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      );
       break;
     default:
       inputElement = <input className={cssClasses.InputElement} {...props.attributes} />;
@@ -26,7 +41,7 @@ const input: React.SFC<Props> = props => {
 
   return (
     <div className={cssClasses.Input}>
-      <label className={cssClasses.Label} htmlFor="">{props.label}</label>
+      {props.label ? <label className={cssClasses.Label} htmlFor="">{props.label}</label> : null}
       {inputElement}
     </div>
   );
