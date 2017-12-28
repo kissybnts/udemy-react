@@ -107,8 +107,25 @@ class ContactData extends React.Component<Props, State> {
       });
   };
 
+  inputChangedHandler = (event: Event, identifier: string) => {
+    const updatedForm = { ...this.state.form };
+    const updatedElement: ElementInfo = { ...updatedForm[identifier] };
+    updatedElement.value = event.target['value'];
+    updatedForm[identifier] = updatedElement;
+    this.setState({ form: updatedForm });
+  };
+
   render () {
-    const inputs = Object.keys(this.state.form).map(key => <Input key={key} inputType={this.state.form[key].elementType} attributes={this.state.form[key].elementConfig} value={this.state.form[key].value}/>)
+    const inputs = Object.keys(this.state.form)
+      .map(key => (
+        <Input
+          key={key}
+          inputType={this.state.form[key].elementType}
+          attributes={this.state.form[key].elementConfig}
+          value={this.state.form[key].value}
+          changed={(event) => this.inputChangedHandler(event, key)}
+        />
+      ));
 
     let form = (
       <form>
