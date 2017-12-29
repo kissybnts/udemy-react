@@ -6,6 +6,7 @@ import { Ingredients } from '../../BurgerBuilder/BurgerBuilder';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
+import { FormEvent } from 'react';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -28,6 +29,14 @@ interface ElementInfo {
   elementType: InputType;
   elementConfig: any;
   value: string;
+  validation: ValidationRule;
+  valid: boolean;
+}
+
+export interface ValidationRule {
+  required?: boolean;
+  maxLength?: number;
+  minLength?: number;
 }
 
 class ContactData extends React.Component<Props, State> {
@@ -41,7 +50,11 @@ class ContactData extends React.Component<Props, State> {
           name: 'name',
           placeholder: 'Your Name'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       email: {
         elementType: InputTypes.Input,
@@ -50,7 +63,11 @@ class ContactData extends React.Component<Props, State> {
           name: 'email',
           placeholder: 'Your E-Mail'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       country: {
         elementType: InputTypes.Input,
@@ -59,7 +76,11 @@ class ContactData extends React.Component<Props, State> {
           name: 'country',
           placeholder: 'Country'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       street: {
         elementType: InputTypes.Input,
@@ -68,7 +89,11 @@ class ContactData extends React.Component<Props, State> {
           name: 'street',
           placeholder: 'Street'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipCode: {
         elementType: InputTypes.Input,
@@ -77,7 +102,13 @@ class ContactData extends React.Component<Props, State> {
           name: 'zipCode',
           placeholder: 'ZIP Code'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: InputTypes.Select,
@@ -87,18 +118,28 @@ class ContactData extends React.Component<Props, State> {
             { value: 'cheapest', label: 'Cheapest' }
           ]
         },
-        value: 'fastest'
+        value: 'fastest',
+        validation: { },
+        valid: true
       }
     }
   };
 
-  orderedHandler = (event: MouseEvent) => {
+  orderedHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const formData: { [key: string]: string } = {};
+
+    Object.keys(this.state.form).forEach(formKey => {
+      formData[formKey] = this.state.form[formKey].value;
+    });
+
     const data = {
       ingredients: { ...this.props.ingredients },
-      deliveryMethod: 'shortest',
-      totalPrice: this.props.price
+      totalPrice: this.props.price,
+      orderData: formData
     };
+
     axios.post('/orders.json', data)
       .then(response => {
         this.props.history.push('/');
@@ -111,6 +152,7 @@ class ContactData extends React.Component<Props, State> {
     const updatedForm = { ...this.state.form };
     const updatedElement: ElementInfo = { ...updatedForm[identifier] };
     updatedElement.value = event.target['value'];
+    updatedElement.valid = this.checkValidity(updatedElement.value, updatedElement.validation);
     updatedForm[identifier] = updatedElement;
     this.setState({ form: updatedForm });
   };
@@ -128,9 +170,9 @@ class ContactData extends React.Component<Props, State> {
       ));
 
     let form = (
-      <form>
+      <form onSubmit={this.orderedHandler}>
         {inputs}
-        <Button clicked={this.orderedHandler} type={'Success'}>ORDER</Button>
+        <Button type={'Success'}>ORDER</Button>
       </form>
     );
 
@@ -143,6 +185,24 @@ class ContactData extends React.Component<Props, State> {
         {form}
       </div>
     );
+  }
+
+  private checkValidity(value: string, rule: ValidationRule): boolean {
+    let valid = true;
+
+    if (rule.required && valid) {
+      valid = value.trim() !== '';
+    }
+
+    if (rule.maxLength && valid) {
+      valid = value.length <= rule.maxLength;
+    }
+
+    if (rule.minLength && valid) {
+      valid = value.length >= rule.minLength;
+    }
+
+    return valid;
   }
 }
 
