@@ -9,7 +9,8 @@ interface Props {
   attributes: any;
   value: string;
   changed: (event?: any) => void;
-  valid: boolean;
+  isValid: boolean;
+  isTouched: boolean;
 }
 
 export namespace InputTypes {
@@ -23,7 +24,7 @@ const input: React.SFC<Props> = props => {
 
   let classes = [cssClasses.InputElement];
 
-  if (!props.valid) {
+  if (props.isTouched && !props.isValid) {
     classes.push(cssClasses.Invalid);
   }
 

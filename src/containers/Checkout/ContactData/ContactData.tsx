@@ -30,7 +30,8 @@ interface ElementInfo {
   elementConfig: any;
   value: string;
   validation: ValidationRule;
-  valid: boolean;
+  isValid: boolean;
+  isTouched: boolean;
 }
 
 export interface ValidationRule {
@@ -54,7 +55,8 @@ class ContactData extends React.Component<Props, State> {
         validation: {
           required: true
         },
-        valid: false
+        isValid: false,
+        isTouched: false
       },
       email: {
         elementType: InputTypes.Input,
@@ -67,7 +69,8 @@ class ContactData extends React.Component<Props, State> {
         validation: {
           required: true
         },
-        valid: false
+        isValid: false,
+        isTouched: false
       },
       country: {
         elementType: InputTypes.Input,
@@ -80,7 +83,8 @@ class ContactData extends React.Component<Props, State> {
         validation: {
           required: true
         },
-        valid: false
+        isValid: false,
+        isTouched: false
       },
       street: {
         elementType: InputTypes.Input,
@@ -93,7 +97,8 @@ class ContactData extends React.Component<Props, State> {
         validation: {
           required: true
         },
-        valid: false
+        isValid: false,
+        isTouched: false
       },
       zipCode: {
         elementType: InputTypes.Input,
@@ -108,7 +113,8 @@ class ContactData extends React.Component<Props, State> {
           minLength: 5,
           maxLength: 5
         },
-        valid: false
+        isValid: false,
+        isTouched: false
       },
       deliveryMethod: {
         elementType: InputTypes.Select,
@@ -120,7 +126,8 @@ class ContactData extends React.Component<Props, State> {
         },
         value: 'fastest',
         validation: { },
-        valid: true
+        isValid: true,
+        isTouched: false
       }
     }
   };
@@ -152,7 +159,8 @@ class ContactData extends React.Component<Props, State> {
     const updatedForm = { ...this.state.form };
     const updatedElement: ElementInfo = { ...updatedForm[identifier] };
     updatedElement.value = event.target['value'];
-    updatedElement.valid = this.checkValidity(updatedElement.value, updatedElement.validation);
+    updatedElement.isValid = this.checkValidity(updatedElement.value, updatedElement.validation);
+    updatedElement.isTouched = true;
     updatedForm[identifier] = updatedElement;
     this.setState({ form: updatedForm });
   };
@@ -166,7 +174,8 @@ class ContactData extends React.Component<Props, State> {
           attributes={this.state.form[key].elementConfig}
           value={this.state.form[key].value}
           changed={(event) => this.inputChangedHandler(event, key)}
-          valid={this.state.form[key].valid}
+          isValid={this.state.form[key].isValid}
+          isTouched={this.state.form[key].isTouched}
         />
       ));
 
@@ -189,21 +198,21 @@ class ContactData extends React.Component<Props, State> {
   }
 
   private checkValidity(value: string, rule: ValidationRule): boolean {
-    let valid = true;
+    let isValid = true;
 
-    if (rule.required && valid) {
-      valid = value.trim() !== '';
+    if (rule.required && isValid) {
+      isValid = value.trim() !== '';
     }
 
-    if (rule.maxLength && valid) {
-      valid = value.length <= rule.maxLength;
+    if (rule.maxLength && isValid) {
+      isValid = value.length <= rule.maxLength;
     }
 
-    if (rule.minLength && valid) {
-      valid = value.length >= rule.minLength;
+    if (rule.minLength && isValid) {
+      isValid = value.length >= rule.minLength;
     }
 
-    return valid;
+    return isValid;
   }
 }
 
