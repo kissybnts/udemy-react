@@ -15,14 +15,17 @@ interface Props extends RouteComponentProps<{}> {
 
 interface State {
   loading: boolean;
-  form: {
+  form: Form;
+  formIsValid: boolean;
+}
+
+interface Form {
     name: ElementInfo;
     email: ElementInfo;
     country: ElementInfo;
     street: ElementInfo;
     zipCode: ElementInfo;
     deliveryMethod: ElementInfo;
-  }
 }
 
 interface ElementInfo {
@@ -129,7 +132,8 @@ class ContactData extends React.Component<Props, State> {
         isValid: true,
         isTouched: false
       }
-    }
+    },
+    formIsValid: false
   };
 
   orderedHandler = (event: FormEvent<HTMLFormElement>) => {
@@ -162,7 +166,8 @@ class ContactData extends React.Component<Props, State> {
     updatedElement.isValid = this.checkValidity(updatedElement.value, updatedElement.validation);
     updatedElement.isTouched = true;
     updatedForm[identifier] = updatedElement;
-    this.setState({ form: updatedForm });
+    const formIsValid = this.checkFormValidity(updatedForm);
+    this.setState({ form: updatedForm, formIsValid: formIsValid });
   };
 
   render () {
@@ -182,7 +187,7 @@ class ContactData extends React.Component<Props, State> {
     let form = (
       <form onSubmit={this.orderedHandler}>
         {inputs}
-        <Button type={'Success'}>ORDER</Button>
+        <Button type={'Success'} disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
 
@@ -213,6 +218,17 @@ class ContactData extends React.Component<Props, State> {
     }
 
     return isValid;
+  }
+
+  private checkFormValidity(updatedForm: Form): boolean {
+    const keys = Object.keys(updatedForm);
+    for (let key in keys) {
+      if (!updatedForm[key].valid) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
 
