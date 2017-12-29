@@ -166,6 +166,7 @@ class ContactData extends React.Component<Props, State> {
           attributes={this.state.form[key].elementConfig}
           value={this.state.form[key].value}
           changed={(event) => this.inputChangedHandler(event, key)}
+          valid={this.state.form[key].valid}
         />
       ));
 

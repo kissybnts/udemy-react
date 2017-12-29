@@ -9,6 +9,7 @@ interface Props {
   attributes: any;
   value: string;
   changed: (event?: any) => void;
+  valid: boolean;
 }
 
 export namespace InputTypes {
@@ -20,23 +21,29 @@ export namespace InputTypes {
 const input: React.SFC<Props> = props => {
   let inputElement = null;
 
+  let classes = [cssClasses.InputElement];
+
+  if (!props.valid) {
+    classes.push(cssClasses.Invalid);
+  }
+
   switch (props.inputType) {
     case InputTypes.Input:
-      inputElement = <input className={cssClasses.InputElement} {...props.attributes} value={props.value} onChange={props.changed} />;
+      inputElement = <input className={classes.join(' ')} {...props.attributes} value={props.value} onChange={props.changed} />;
       break;
     case InputTypes.Textarea:
-      inputElement = <textarea className={cssClasses.InputElement} {...props.attributes} value={props.value} onChange={props.changed} />;
+      inputElement = <textarea className={classes.join(' ')} {...props.attributes} value={props.value} onChange={props.changed} />;
       break;
     case InputTypes.Select:
       const options: { value: string, label: string }[] = props.attributes['options'];
       inputElement = (
-        <select className={cssClasses.InputElement} name={props.label} id="" value={props.value} onChange={props.changed}>
+        <select className={classes.join(' ')} name={props.label} id="" value={props.value} onChange={props.changed}>
           {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       );
       break;
     default:
-      inputElement = <input className={cssClasses.InputElement} {...props.attributes} onChange={props.changed} />;
+      inputElement = <input className={classes.join(' ')} {...props.attributes} onChange={props.changed} />;
       break;
   }
 
