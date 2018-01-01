@@ -1,5 +1,5 @@
-import * as actionTypes from './actions';
 import { Ingredients } from '../containers/BurgerBuilder/BurgerBuilder';
+import { isAddIngredientAction, isRemoveIngredientAction } from './actions';
 import { Action } from 'redux';
 
 interface State {
@@ -13,14 +13,35 @@ const initialState = {
 };
 
 const reducer = (state: State = initialState, action: Action) => {
-  switch (action.type) {
-    case actionTypes.ADD_INGREDIENT:
-      return state;
-    case actionTypes.REMOVE_INGREDIENT:
-      return state;
-    default:
-      return state;
+  if (isAddIngredientAction(action)) {
+    const ingredients = state.ingredients;
+    if (ingredients !== undefined) {
+      const oldAmount = ingredients[action.ingredientName];
+      if (!oldAmount || oldAmount <= 0) {
+        return state;
+      }
+
+      return {
+        ...state,
+        ingredients: {
+          ...ingredients,
+          [action.ingredientName]: ingredients[action.ingredientName] + 1
+        }
+      };
+    }
+  } else if (isRemoveIngredientAction(action)) {
+    const ingredients = state.ingredients;
+    if (ingredients !== undefined) {
+      return {
+        ...state,
+        ingredients: {
+          ...ingredients,
+          [action.ingredientName]: ingredients[action.ingredientName] - 1
+        }
+      };
+    }
   }
+  return state;
 };
 
 export default reducer;
