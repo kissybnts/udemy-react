@@ -2,22 +2,27 @@ import { Ingredients } from '../containers/BurgerBuilder/BurgerBuilder';
 import { isAddIngredientAction, isRemoveIngredientAction } from './actions';
 import { Action } from 'redux';
 
-interface State {
+export interface BurgerBuilderState {
   ingredients?: Ingredients;
   totalPrice: number;
 }
 
-const initialState = {
-  ingredients: undefined,
+const initialState: BurgerBuilderState = {
+  ingredients: {
+    Bacon: 0,
+    Cheese: 0,
+    Meat: 0,
+    Salad: 0
+  },
   totalPrice: 4
 };
 
-const reducer = (state: State = initialState, action: Action) => {
+const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
   if (isAddIngredientAction(action)) {
     const ingredients = state.ingredients;
     if (ingredients !== undefined) {
       const oldAmount = ingredients[action.ingredientName];
-      if (!oldAmount || oldAmount <= 0) {
+      if (oldAmount === undefined || oldAmount < 0) {
         return state;
       }
 

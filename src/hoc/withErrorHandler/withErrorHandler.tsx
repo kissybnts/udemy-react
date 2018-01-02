@@ -6,7 +6,7 @@ interface State {
   error: any;
 }
 
-const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
+const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance): any => {
   return class extends React.Component<{}, State> {
     state = {
       error: null
