@@ -8,7 +8,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
 import { FormEvent } from 'react';
 import { connect } from 'react-redux';
-import { BurgerBuilderState } from '../../../store/reducer';
+import { BurgerBuilderState } from '../../../store/reducers/burgerBuilder';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;

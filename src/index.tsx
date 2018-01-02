@@ -5,7 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
-import reducer from './store/reducer';
+import reducer from './store/reducers/burgerBuilder';
 import { Provider } from 'react-redux';
 
 const store = createStore(

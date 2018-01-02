@@ -8,9 +8,9 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { BurgerBuilderState } from '../../store/reducer';
+import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
-import { createAddIngredientAction, createRemoveIngredientAction } from '../../store/actions';
+import { createAddIngredientAction, createRemoveIngredientAction } from '../../store/actions/actionTypes';
 
 
 interface Props extends RouteComponentProps<{}> {
