@@ -21,7 +21,6 @@ interface Props extends RouteComponentProps<{}> {
 }
 
 interface State {
-  purchasable: boolean;
   purchasing: boolean;
   loading: boolean;
   error: boolean;
@@ -36,7 +35,6 @@ export interface Ingredients {
 
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
-    purchasable: false,
     purchasing: false,
     loading: false,
     error: false
@@ -98,7 +96,7 @@ class BurgerBuilder extends React.Component<Props, State> {
             ingredientRemoved={this.props.onIngredientRemoved}
             disabledInfo={disabledInfo}
             price={this.props.totalPrice}
-            purchasable={this.state.purchasable}
+            purchasable={this.canPurchase()}
             ordered={this.purchaseHandler}
           />
         </React.Fragment>
@@ -126,12 +124,16 @@ class BurgerBuilder extends React.Component<Props, State> {
     );
   }
 
-  // private updatePurchasable(ingredients: Ingredients) {
-  //   const sum = Object.keys(ingredients)
-  //     .map(key => ingredients[key])
-  //     .reduce((total, elem) => total + elem, 0);
-  //   this.setState({ purchasable: sum > 0 });
-  // }
+  private canPurchase = (): boolean => {
+    const ingredients = this.props.ingredients;
+    if (ingredients) {
+      const sum = Object.keys(ingredients)
+        .map(key => ingredients[key])
+        .reduce((total, elem) => total + elem, 0);
+      return sum > 0;
+    }
+    return false;
+  }
 }
 
 const mapStateToProps = (state: BurgerBuilderState) => ({
