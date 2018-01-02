@@ -3,36 +3,15 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import { Ingredients } from '../BurgerBuilder/BurgerBuilder';
 import { Route, RouteComponentProps } from 'react-router';
 import ContactData from './ContactData/ContactData';
+import { connect } from 'react-redux';
+import { BurgerBuilderState } from '../../store/reducer';
 
-interface State {
+interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
-  price: number;
+  totalPrice: number;
 }
 
-class Checkout extends React.Component<RouteComponentProps<{}>, State> {
-  state = {
-    ingredients: {
-      Bacon: 1,
-      Cheese: 1,
-      Meat: 1,
-      Salad: 1
-    },
-    price: 4
-  };
-
-  componentWillMount() {
-    const query = this.parseUrlParams(this.props.location.search.toString());
-    const ingredients = Object.assign(this.state.ingredients);
-    query.forEach((value, key) => {
-      if (ingredients[key] !== undefined) {
-        ingredients[key] = +value;
-      }
-    });
-
-    const price = query.get('price');
-
-    this.setState({ ingredients: ingredients, price: price ? +price : 4 });
-  }
+class Checkout extends React.Component<Props, {}> {
 
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
@@ -46,27 +25,19 @@ class Checkout extends React.Component<RouteComponentProps<{}>, State> {
     return (
       <div>
         <CheckoutSummary
-          ingredients={this.state.ingredients}
+          ingredients={this.props.ingredients}
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
-        <Route path={this.props.match.url + '/contact-data'} render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.price} {...props} />) }  />
+        <Route path={this.props.match.url + '/contact-data'} render={(props) => (<ContactData {...props} />) }  />
       </div>
     );
   }
-
-  private parseUrlParams(query: string): Map<string, string> {
-    if (query) {
-      const params = query.split('?')[1];
-      return params.split('&').reduce((previousValue, currentValue) => {
-        let components = currentValue.split('=');
-        previousValue.set(components[0], components[1]);
-        return previousValue;
-      }, new Map<string, string>());
-    } else {
-      return new Map<string, string>()
-    }
-  }
 }
 
-export default Checkout;
+const mapStateToProps = (state: BurgerBuilderState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice
+});
+
+export default connect(mapStateToProps)(Checkout);

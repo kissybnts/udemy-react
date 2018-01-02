@@ -7,10 +7,12 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
 import { FormEvent } from 'react';
+import { connect } from 'react-redux';
+import { BurgerBuilderState } from '../../../store/reducer';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
-  price: number;
+  totalPrice: number;
 }
 
 interface State {
@@ -147,7 +149,7 @@ class ContactData extends React.Component<Props, State> {
 
     const data = {
       ingredients: { ...this.props.ingredients },
-      totalPrice: this.props.price,
+      totalPrice: this.props.totalPrice.toFixed(2),
       orderData: formData
     };
 
@@ -222,8 +224,8 @@ class ContactData extends React.Component<Props, State> {
 
   private checkFormValidity(updatedForm: Form): boolean {
     const keys = Object.keys(updatedForm);
-    for (let key in keys) {
-      if (!updatedForm[key].valid) {
+    for (let key of keys) {
+      if (!updatedForm[key].isValid) {
         return false;
       }
     }
@@ -232,4 +234,9 @@ class ContactData extends React.Component<Props, State> {
   }
 }
 
-export default ContactData;
+const mapStateToProps = (state: BurgerBuilderState) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice
+});
+
+export default connect(mapStateToProps)(ContactData);
