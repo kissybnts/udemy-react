@@ -17,6 +17,13 @@ const initialState: BurgerBuilderState = {
   totalPrice: 4
 };
 
+const INGREDIENT_PRICE = {
+  Salad: 0.5,
+  Meat: 0.4,
+  Bacon: 0.7,
+  Cheese: 1.3
+};
+
 const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
   if (isAddIngredientAction(action)) {
     const ingredients = state.ingredients;
@@ -31,18 +38,24 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
         ingredients: {
           ...ingredients,
           [action.ingredientName]: ingredients[action.ingredientName] + 1
-        }
+        },
+        totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
       };
     }
   } else if (isRemoveIngredientAction(action)) {
     const ingredients = state.ingredients;
     if (ingredients !== undefined) {
+      const oldAmount = ingredients[action.ingredientName];
+      if (oldAmount === undefined || oldAmount <= 0) {
+        return state;
+      }
       return {
         ...state,
         ingredients: {
           ...ingredients,
           [action.ingredientName]: ingredients[action.ingredientName] - 1
-        }
+        },
+        totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
       };
     }
   }

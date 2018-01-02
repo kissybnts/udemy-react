@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Burger from '../../components/Burger/Burger';
-// import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
@@ -28,13 +27,6 @@ interface State {
   error: boolean;
 }
 
-// const INGREDIENT_PRICE = {
-//   Salad: 0.5,
-//   Meat: 0.4,
-//   Bacon: 0.7,
-//   Cheese: 1.3
-// };
-
 export interface Ingredients {
   Meat: number;
   Cheese: number;
@@ -58,41 +50,6 @@ class BurgerBuilder extends React.Component<Props, State> {
     //     this.setState({ error: true })
     //   });
   }
-
-  // addIngredientHandler = (type: BurgerIngredientType) => {
-  //   const ingredients = this.props.ingredients;
-  //
-  //   if (ingredients !== undefined) {
-  //     const oldAmount = ingredients[type];
-  //     const updatedAmount = oldAmount + 1;
-  //     const updatedIngredients = Object.assign(ingredients);
-  //     updatedIngredients[type] = updatedAmount;
-  //     const priceAddition = INGREDIENT_PRICE[type];
-  //     const oldPrice = this.props.totalPrice;
-  //     const newPrice = oldPrice + priceAddition;
-  //     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-  //     this.updatePurchasable(updatedIngredients);
-  //   }
-  // };
-
-  // removeIngredientHandler = (type: BurgerIngredientType) => {
-  //   const ingredients = this.state.ingredients;
-  //
-  //   if (ingredients !== undefined) {
-  //     const oldAmount = ingredients[type];
-  //     if (oldAmount <= 0) {
-  //       return;
-  //     }
-  //     const updatedAmount = oldAmount - 1;
-  //     const updatedIngredients = Object.assign(ingredients);
-  //     updatedIngredients[type] = updatedAmount;
-  //     const priceDeduction = INGREDIENT_PRICE[type];
-  //     const oldPrice = this.state.totalPrice;
-  //     const newPrice = oldPrice - priceDeduction;
-  //     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice });
-  //     this.updatePurchasable(updatedIngredients);
-  //   }
-  // };
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
