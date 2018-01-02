@@ -10,7 +10,7 @@ import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
-import { createAddIngredientAction, createRemoveIngredientAction } from '../../store/actions/actionTypes';
+import { createAddIngredientAction, createRemoveIngredientAction } from '../../store/actions/index';
 
 
 interface Props extends RouteComponentProps<{}> {

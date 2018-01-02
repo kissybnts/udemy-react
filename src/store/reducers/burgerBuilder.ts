@@ -1,5 +1,5 @@
 import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
-import { isAddIngredientAction, isRemoveIngredientAction } from '../actions/actionTypes';
+import { isAddIngredientAction, isRemoveIngredientAction } from '../actions/index';
 import { Action } from 'redux';
 
 export interface BurgerBuilderState {
