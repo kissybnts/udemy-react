@@ -27,10 +27,10 @@ interface State {
 }
 
 export interface Ingredients {
-  Meat: number;
-  Cheese: number;
-  Bacon: number;
   Salad: number;
+  Bacon: number;
+  Cheese: number;
+  Meat: number;
 }
 
 class BurgerBuilder extends React.Component<Props, State> {

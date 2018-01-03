@@ -60,7 +60,12 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
     const totalPrice = price + 4;
     return {
       ...state,
-      ingredients: action.ingredients,
+      ingredients: {
+        Salad: action.ingredients.Salad,
+        Bacon: action.ingredients.Bacon,
+        Cheese: action.ingredients.Cheese,
+        Meat: action.ingredients.Meat
+      },
       totalPrice: totalPrice,
       error: false
     }
