@@ -12,6 +12,7 @@ import { BurgerBuilderState } from '../../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
 import { createPurchaseRequestAction } from '../../../store/actions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import { OrderData } from '../../Orders/Orders';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -151,10 +152,18 @@ class ContactData extends React.Component<Props, State> {
       formData[formKey] = this.state.form[formKey].value;
     });
 
-    const data = {
+    const data: OrderData = {
       ingredients: { ...this.props.ingredients },
-      totalPrice: this.props.totalPrice.toFixed(2),
-      orderData: formData
+      totalPrice: +this.props.totalPrice.toFixed(2),
+      customer: {
+        address: {
+          postalCode: formData['zipCode'],
+          street: formData['street']
+        },
+        email: formData['email'],
+        name: formData['name']
+      },
+      deliveryMethod: formData['deliveryMethod']
     };
 
     this.props.onOrderBurger(data);

@@ -11,8 +11,11 @@ interface State {
   loading: boolean;
 }
 
-interface Order {
+export interface Order extends OrderData{
   id: string;
+}
+
+export interface OrderData {
   customer: {
     name: string;
     email: string;

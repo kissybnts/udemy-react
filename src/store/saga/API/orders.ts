@@ -6,7 +6,6 @@ export function* handlePurchaseRequest() {
   while (true) {
     const action: PurchaseRequestAction = yield take(isPurchaseRequestAction);
     const response = yield call(axios.post, '/orders.json', action.orderData);
-    console.log(response);
     if (response.status && response.status.toString().startsWith('2')) {
       yield put(createPurchaseSuccessAction(response.data.name, action.orderData));
     } else {
