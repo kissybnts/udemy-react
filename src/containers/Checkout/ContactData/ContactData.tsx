@@ -9,10 +9,14 @@ import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input
 import { FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { BurgerBuilderState } from '../../../store/reducers/burgerBuilder';
+import { Action, Dispatch } from 'redux';
+import { createPurchaseRequestAction } from '../../../store/actions';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
   totalPrice: number;
+  onOrderBurger: (orderData: any) => void;
 }
 
 interface State {
@@ -153,12 +157,7 @@ class ContactData extends React.Component<Props, State> {
       orderData: formData
     };
 
-    axios.post('/orders.json', data)
-      .then(response => {
-        this.props.history.push('/');
-      }).catch(error => {
-        console.log(error);
-      });
+    this.props.onOrderBurger(data);
   };
 
   inputChangedHandler = (event: Event, identifier: string) => {
@@ -239,4 +238,8 @@ const mapStateToProps = (state: BurgerBuilderState) => ({
   totalPrice: state.totalPrice
 });
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onOrderBurger: (orderData: any) => dispatch(createPurchaseRequestAction(orderData))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

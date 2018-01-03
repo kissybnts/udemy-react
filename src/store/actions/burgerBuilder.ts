@@ -3,7 +3,7 @@ import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 
 const ADD_INGREDIENT = 'ADD_INGREDIENT';
 const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
-const FETCH_INGREDIENTS = 'FETCH_INGREDIENTS';
+const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS';
 const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';
 const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED';
 
@@ -20,8 +20,8 @@ export const isRemoveIngredientAction = (action: Action): action is RemoveIngred
 export const createRemoveIngredientAction = (ingName: string): RemoveIngredientAction => ({ type: REMOVE_INGREDIENT, ingredientName: ingName });
 
 interface FetchIngredientsAction extends Action {}
-export const isFetchIngredientsAction = (action: Action): action is FetchIngredientsAction => action.type === FETCH_INGREDIENTS;
-export const createFetchIngredientsAction = (): FetchIngredientsAction => ({ type: FETCH_INGREDIENTS });
+export const isFetchIngredientsAction = (action: Action): action is FetchIngredientsAction => action.type === FETCH_INGREDIENTS_REQUEST;
+export const createFetchIngredientsAction = (): FetchIngredientsAction => ({ type: FETCH_INGREDIENTS_REQUEST });
 
 interface FetchIngredientsSuccessAction extends Action {
   ingredients: Ingredients;

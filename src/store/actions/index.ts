@@ -10,6 +10,16 @@ import {
   createFetchIngredientsFailedAction,
   isFetchIngredientsFailedAction
 } from './burgerBuilder';
+import {
+  isPurchaseRequestAction,
+  isPurchaseSuccessAction,
+  isPurchaseFailAction,
+  createPurchaseRequestAction,
+  createPurchaseSuccessAction,
+  createPurchaseFailAction,
+  PurchaseRequestAction,
+} from './order'
+
 
 export {
   isRemoveIngredientAction,
@@ -21,5 +31,12 @@ export {
   createFetchIngredientsSuccessAction,
   isFetchIngredientsSuccessAction,
   isFetchIngredientsFailedAction,
-  createFetchIngredientsFailedAction
+  createFetchIngredientsFailedAction,
+  isPurchaseRequestAction,
+  isPurchaseSuccessAction,
+  isPurchaseFailAction,
+  createPurchaseRequestAction,
+  createPurchaseSuccessAction,
+  createPurchaseFailAction,
+  PurchaseRequestAction,
 };
