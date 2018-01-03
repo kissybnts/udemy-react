@@ -1,20 +1,17 @@
 import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
-import { isAddIngredientAction, isRemoveIngredientAction } from '../actions/index';
+import { isAddIngredientAction, isFetchIngredientsFailedAction, isFetchIngredientsSuccessAction, isRemoveIngredientAction } from '../actions/index';
 import { Action } from 'redux';
 
 export interface BurgerBuilderState {
   ingredients?: Ingredients;
   totalPrice: number;
+  error: boolean;
 }
 
 const initialState: BurgerBuilderState = {
-  ingredients: {
-    Bacon: 0,
-    Cheese: 0,
-    Meat: 0,
-    Salad: 0
-  },
-  totalPrice: 4
+  ingredients: undefined,
+  totalPrice: 4,
+  error: false
 };
 
 const INGREDIENT_PRICE = {
@@ -57,6 +54,20 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
       };
+    }
+  } else if (isFetchIngredientsSuccessAction(action)) {
+    const price: number = Object.keys(action.ingredients).map(key => action.ingredients[key] * INGREDIENT_PRICE[key]).reduce((prev, curr) => prev + curr);
+    const totalPrice = price + 4;
+    return {
+      ...state,
+      ingredients: action.ingredients,
+      totalPrice: totalPrice,
+      error: false
+    }
+  } else if (isFetchIngredientsFailedAction(action)) {
+    return {
+      ...state,
+      error: true
     }
   }
   return state;

@@ -2,12 +2,24 @@ import {
   createAddIngredientAction,
   createRemoveIngredientAction,
   isAddIngredientAction,
-  isRemoveIngredientAction
+  isRemoveIngredientAction,
+  createFetchIngredientsAction,
+  isFetchIngredientsAction,
+  createFetchIngredientsSuccessAction,
+  isFetchIngredientsSuccessAction,
+  createFetchIngredientsFailedAction,
+  isFetchIngredientsFailedAction
 } from './burgerBuilder';
 
 export {
   isRemoveIngredientAction,
   isAddIngredientAction,
   createRemoveIngredientAction,
-  createAddIngredientAction
+  createAddIngredientAction,
+  createFetchIngredientsAction,
+  isFetchIngredientsAction,
+  createFetchIngredientsSuccessAction,
+  isFetchIngredientsSuccessAction,
+  isFetchIngredientsFailedAction,
+  createFetchIngredientsFailedAction
 };

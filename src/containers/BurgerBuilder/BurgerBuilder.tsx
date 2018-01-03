@@ -10,20 +10,20 @@ import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
-import { createAddIngredientAction, createRemoveIngredientAction } from '../../store/actions/index';
+import { createAddIngredientAction, createFetchIngredientsAction, createRemoveIngredientAction } from '../../store/actions/index';
 
 
 interface Props extends RouteComponentProps<{}> {
   ingredients?: Ingredients;
   totalPrice: number;
+  error: boolean;
   onIngredientAdded: (ingKey: string) => void;
   onIngredientRemoved: (ingKey: string) => void;
+  requestFetchingIngredients: () => void;
 }
 
 interface State {
   purchasing: boolean;
-  loading: boolean;
-  error: boolean;
 }
 
 export interface Ingredients {
@@ -35,18 +35,11 @@ export interface Ingredients {
 
 class BurgerBuilder extends React.Component<Props, State> {
   state = {
-    purchasing: false,
-    loading: false,
-    error: false
+    purchasing: false
   };
 
   componentDidMount() {
-    // axios.get('/ingredients.json')
-    //   .then(req => {
-    //     this.setState({ ingredients: { ...req.data }});
-    //   }).catch(error => {
-    //     this.setState({ error: true })
-    //   });
+    this.props.requestFetchingIngredients();
   }
 
   purchaseHandler = () => {
@@ -64,7 +57,7 @@ class BurgerBuilder extends React.Component<Props, State> {
   render() {
     const ingredients = this.props.ingredients;
 
-    let burger = this.state.error ? <p>Ingredients can't load!</p> : <Spinner/>;
+    let burger = this.props.error ? <p>Ingredients can't load!</p> : <Spinner/>;
     let orderSummary = null;
 
     if (ingredients !== undefined) {
@@ -98,10 +91,6 @@ class BurgerBuilder extends React.Component<Props, State> {
       />;
     }
 
-    if (this.state.loading) {
-      orderSummary = <Spinner/>
-    }
-
     return (
       <React.Fragment>
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
@@ -126,12 +115,14 @@ class BurgerBuilder extends React.Component<Props, State> {
 
 const mapStateToProps = (state: BurgerBuilderState) => ({
   ingredients: state.ingredients,
-  totalPrice: state.totalPrice
+  totalPrice: state.totalPrice,
+  error: state.error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onIngredientAdded: (ingKey: string) => dispatch(createAddIngredientAction(ingKey)),
-  onIngredientRemoved: (ingKey: string) => dispatch(createRemoveIngredientAction(ingKey))
+  onIngredientRemoved: (ingKey: string) => dispatch(createRemoveIngredientAction(ingKey)),
+  requestFetchingIngredients: () => dispatch(createFetchIngredientsAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
