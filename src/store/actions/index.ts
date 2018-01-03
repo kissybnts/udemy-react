@@ -12,12 +12,14 @@ import {
 } from './burgerBuilder';
 import {
   isPurchaseRequestAction,
-  isPurchaseSuccessAction,
-  isPurchaseFailAction,
+  isPurchaseRequestSuccessAction,
+  isPurchaseRequestFailAction,
   createPurchaseRequestAction,
-  createPurchaseSuccessAction,
-  createPurchaseFailAction,
+  createPurchaseRequestSuccessAction,
+  createPurchaseRequestFailAction,
   PurchaseRequestAction,
+  createPurchaseRequestStartAction,
+  isPurchaseRequestStartAction,
 } from './order'
 
 
@@ -33,10 +35,12 @@ export {
   isFetchIngredientsFailedAction,
   createFetchIngredientsFailedAction,
   isPurchaseRequestAction,
-  isPurchaseSuccessAction,
-  isPurchaseFailAction,
+  isPurchaseRequestSuccessAction,
+  isPurchaseRequestFailAction,
   createPurchaseRequestAction,
-  createPurchaseSuccessAction,
-  createPurchaseFailAction,
+  createPurchaseRequestSuccessAction,
+  createPurchaseRequestFailAction,
   PurchaseRequestAction,
+  createPurchaseRequestStartAction,
+  isPurchaseRequestStartAction,
 };

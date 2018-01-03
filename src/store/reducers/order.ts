@@ -1,6 +1,10 @@
 import { Action } from 'redux';
 import { Order } from '../../containers/Orders/Orders';
-import { isPurchaseFailAction, isPurchaseSuccessAction } from '../actions';
+import {
+  isPurchaseRequestFailAction,
+  isPurchaseRequestStartAction,
+  isPurchaseRequestSuccessAction
+} from '../actions';
 
 interface OrderState {
   orders: Order[];
@@ -13,17 +17,22 @@ const initialState: OrderState = {
 };
 
 const reducer = (state: OrderState = initialState, action: Action): OrderState => {
-  if (isPurchaseSuccessAction(action)) {
+  if (isPurchaseRequestSuccessAction(action)) {
     return {
       ...state,
       orders: state.orders.concat({ id: action.id, ...action.orderData }),
       loading: false
-    }
-  } else if (isPurchaseFailAction(action)) {
+    };
+  } else if (isPurchaseRequestFailAction(action)) {
     return {
       ...state,
       loading: false
-    }
+    };
+  } else if (isPurchaseRequestStartAction(action)) {
+    return {
+      ...state,
+      loading: true
+    };
   }
 
   return state;

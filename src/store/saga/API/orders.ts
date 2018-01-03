@@ -1,15 +1,19 @@
 import axios from '../../../axios-orders';
 import { call, put, take } from 'redux-saga/effects';
-import { createPurchaseFailAction, createPurchaseSuccessAction, isPurchaseRequestAction, PurchaseRequestAction } from '../../actions';
+import {
+  createPurchaseRequestFailAction, createPurchaseRequestStartAction, createPurchaseRequestSuccessAction, isPurchaseRequestAction,
+  PurchaseRequestAction
+} from '../../actions';
 
 export function* handlePurchaseRequest() {
   while (true) {
     const action: PurchaseRequestAction = yield take(isPurchaseRequestAction);
     const response = yield call(axios.post, '/orders.json', action.orderData);
+    yield put(createPurchaseRequestStartAction());
     if (response.status && response.status.toString().startsWith('2')) {
-      yield put(createPurchaseSuccessAction(response.data.name, action.orderData));
+      yield put(createPurchaseRequestSuccessAction(response.data.name, action.orderData));
     } else {
-      yield put(createPurchaseFailAction(response.message ? response.message : null));
+      yield put(createPurchaseRequestFailAction(response.message ? response.message : null));
     }
   }
 }
