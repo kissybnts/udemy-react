@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import { Ingredients } from '../BurgerBuilder/BurgerBuilder';
-import { Route, RouteComponentProps } from 'react-router';
+import { Redirect, Route, RouteComponentProps } from 'react-router';
 import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
 import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
@@ -22,6 +22,10 @@ class Checkout extends React.Component<Props, {}> {
   };
 
   render() {
+    if (this.props.ingredients === undefined) {
+      return <Redirect to={'/'}/>
+    }
+
     return (
       <div>
         <CheckoutSummary
