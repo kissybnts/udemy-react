@@ -8,20 +8,20 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
 import { FormEvent } from 'react';
 import { connect } from 'react-redux';
-import { BurgerBuilderState } from '../../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
 import { createPurchaseRequestAction } from '../../../store/actions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { OrderData } from '../../Orders/Orders';
+import { ReduxState } from '../../../index';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
   totalPrice: number;
+  loading: boolean;
   onOrderBurger: (orderData: any) => void;
 }
 
 interface State {
-  loading: boolean;
   form: Form;
   formIsValid: boolean;
 }
@@ -52,7 +52,6 @@ export interface ValidationRule {
 
 class ContactData extends React.Component<Props, State> {
   state = {
-    loading: false,
     form: {
       name: {
         elementType: InputTypes.Input,
@@ -201,7 +200,7 @@ class ContactData extends React.Component<Props, State> {
       </form>
     );
 
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner/>
     }
 
@@ -242,9 +241,10 @@ class ContactData extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: BurgerBuilderState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice
+const mapStateToProps = (state: ReduxState) => ({
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  loading: state.order.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

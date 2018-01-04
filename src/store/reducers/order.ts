@@ -6,7 +6,7 @@ import {
   isPurchaseRequestSuccessAction
 } from '../actions';
 
-interface OrderState {
+export interface OrderState {
   orders: Order[];
   loading: boolean;
 }

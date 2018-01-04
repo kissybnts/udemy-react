@@ -4,7 +4,7 @@ import { Ingredients } from '../BurgerBuilder/BurgerBuilder';
 import { Redirect, Route, RouteComponentProps } from 'react-router';
 import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
-import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
+import { ReduxState } from '../../index';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -39,9 +39,9 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: BurgerBuilderState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice
+const mapStateToProps = (state: ReduxState) => ({
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice
 });
 
 export default connect(mapStateToProps)(Checkout);

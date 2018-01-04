@@ -8,9 +8,9 @@ import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { BurgerBuilderState } from '../../store/reducers/burgerBuilder';
 import { Action, Dispatch } from 'redux';
 import { createAddIngredientAction, createFetchIngredientsAction, createRemoveIngredientAction } from '../../store/actions/index';
+import { ReduxState } from '../../index';
 
 
 interface Props extends RouteComponentProps<{}> {
@@ -113,10 +113,10 @@ class BurgerBuilder extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: BurgerBuilderState) => ({
-  ingredients: state.ingredients,
-  totalPrice: state.totalPrice,
-  error: state.error
+const mapStateToProps = (state: ReduxState) => ({
+  ingredients: state.burgerBuilder.ingredients,
+  totalPrice: state.burgerBuilder.totalPrice,
+  error: state.burgerBuilder.error
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
