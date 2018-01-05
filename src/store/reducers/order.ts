@@ -1,9 +1,9 @@
 import { Action } from 'redux';
 import { Order } from '../../containers/Orders/Orders';
 import {
-  isPurchaseInitAction,
-  isPurchaseRequestFailAction,
-  isPurchaseRequestStartAction,
+  isFetchOrdersRequestFailAction, isFetchOrdersRequestStartAction,
+  isFetchOrdersRequestSuccessAction, isPurchaseInitAction,
+  isPurchaseRequestFailAction, isPurchaseRequestStartAction,
   isPurchaseRequestSuccessAction
 } from '../actions';
 
@@ -27,6 +27,12 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
       loading: false,
       purchased: true,
     };
+  } else if (isFetchOrdersRequestSuccessAction(action)) {
+    return {
+      ...state,
+      orders: action.orders,
+      loading: false
+    }
   } else if (isPurchaseRequestFailAction(action)) {
     return {
       ...state,
@@ -41,6 +47,16 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
     return {
       ...state,
       purchased: false
+    }
+  } else if (isFetchOrdersRequestFailAction(action)) {
+    return {
+      ...state,
+      loading: false
+    }
+  } else if (isFetchOrdersRequestStartAction(action)) {
+    return {
+      ...state,
+      loading: true
     }
   }
 

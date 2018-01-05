@@ -5,10 +5,16 @@ import { Ingredients } from '../BurgerBuilder/BurgerBuilder';
 import { RouteComponentProps } from 'react-router';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { ReduxState } from '../../index';
+import { Action, Dispatch } from 'redux';
+import { createFetchOrdersRequestAction } from '../../store/actions';
+import { connect } from 'react-redux';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
-interface State {
+interface Props extends RouteComponentProps<{}> {
   orders: Order[];
   loading: boolean;
+  onInitOrders: () => void;
 }
 
 export interface Order extends OrderData{
@@ -29,31 +35,16 @@ export interface OrderData {
   deliveryMethod: string;
 }
 
-class Orders extends React.Component<RouteComponentProps<{}>, State> {
-  state: State = {
-    orders: [],
-    loading: true
-  };
-
+class Orders extends React.Component<Props, {}> {
   componentDidMount(){
-    axios.get('/orders.json')
-      .then(response => {
-        const orders: Order[] = Object.keys(response.data).map(key => {
-          return {
-            id: key,
-            ...response.data[key]
-          }
-        });
-
-        this.setState({ loading: false, orders: orders });
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      })
+    this.props.onInitOrders();
   }
 
   render() {
-    const orders = this.state.orders.map(order => (
+    if (this.props.loading) {
+      return <Spinner />
+    }
+    const orders = this.props.orders.map(order => (
       <Order key={order.id} ingredients={order.ingredients} price={+order.totalPrice}/>
     ));
     return (
@@ -64,4 +55,13 @@ class Orders extends React.Component<RouteComponentProps<{}>, State> {
   }
 }
 
-export default withErrorHandler(Orders, axios);
+const mapStateToProps = (state: ReduxState) => ({
+  orders: state.order.orders,
+  loading: state.order.loading,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onInitOrders: () => dispatch(createFetchOrdersRequestAction())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
