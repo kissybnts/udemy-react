@@ -5,6 +5,7 @@ const PURCHASE_REQUEST = 'PURCHASE_REQUEST';
 const PURCHASE_REQUEST_START = 'PURCHASE_REQUEST_START';
 const PURCHASE_REQUEST_SUCCESS = 'PURCHASE_REQUEST_SUCCESS';
 const PURCHASE_REQUEST_FAIL = 'PURCHASE_REQUEST_FAIL';
+const PURCHASE_INIT = 'PURCHASE_INIT';
 
 export interface PurchaseRequestAction extends Action {
   orderData: OrderData;
@@ -28,3 +29,7 @@ interface PurchaseRequestFailAction extends Action {
 }
 export const isPurchaseRequestFailAction = (action: Action): action is PurchaseRequestFailAction => action.type === PURCHASE_REQUEST_FAIL;
 export const createPurchaseRequestFailAction = (error: any): PurchaseRequestFailAction => ({ type: PURCHASE_REQUEST_FAIL, error: error });
+
+interface PurchaseInitAction extends Action {}
+export const isPurchaseInitAction = (action: Action): action is PurchaseInitAction => action.type === PURCHASE_INIT;
+export const createPurchaseInitAction = (): PurchaseInitAction => ({ type: PURCHASE_INIT });

@@ -9,7 +9,12 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import { createAddIngredientAction, createFetchIngredientsAction, createRemoveIngredientAction } from '../../store/actions/index';
+import {
+  createAddIngredientAction,
+  createFetchIngredientsAction,
+  createPurchaseInitAction,
+  createRemoveIngredientAction
+} from '../../store/actions/index';
 import { ReduxState } from '../../index';
 
 
@@ -20,6 +25,7 @@ interface Props extends RouteComponentProps<{}> {
   onIngredientAdded: (ingKey: string) => void;
   onIngredientRemoved: (ingKey: string) => void;
   requestFetchingIngredients: () => void;
+  onInitPurchase: () => void;
 }
 
 interface State {
@@ -51,6 +57,7 @@ class BurgerBuilder extends React.Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
+    this.props.onInitPurchase();
     this.props.history.push('/checkout');
   };
 
@@ -116,13 +123,14 @@ class BurgerBuilder extends React.Component<Props, State> {
 const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burgerBuilder.ingredients,
   totalPrice: state.burgerBuilder.totalPrice,
-  error: state.burgerBuilder.error
+  error: state.burgerBuilder.error,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onIngredientAdded: (ingKey: string) => dispatch(createAddIngredientAction(ingKey)),
   onIngredientRemoved: (ingKey: string) => dispatch(createRemoveIngredientAction(ingKey)),
-  requestFetchingIngredients: () => dispatch(createFetchIngredientsAction())
+  requestFetchingIngredients: () => dispatch(createFetchIngredientsAction()),
+  onInitPurchase: () => dispatch(createPurchaseInitAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

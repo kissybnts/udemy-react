@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { Order } from '../../containers/Orders/Orders';
 import {
+  isPurchaseInitAction,
   isPurchaseRequestFailAction,
   isPurchaseRequestStartAction,
   isPurchaseRequestSuccessAction
@@ -9,11 +10,13 @@ import {
 export interface OrderState {
   orders: Order[];
   loading: boolean;
+  purchased: boolean;
 }
 
 const initialState: OrderState = {
   orders: [],
-  loading: false
+  loading: false,
+  purchased: false,
 };
 
 const reducer = (state: OrderState = initialState, action: Action): OrderState => {
@@ -21,7 +24,8 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
     return {
       ...state,
       orders: state.orders.concat({ id: action.id, ...action.orderData }),
-      loading: false
+      loading: false,
+      purchased: true,
     };
   } else if (isPurchaseRequestFailAction(action)) {
     return {
@@ -33,6 +37,11 @@ const reducer = (state: OrderState = initialState, action: Action): OrderState =
       ...state,
       loading: true
     };
+  } else if (isPurchaseInitAction(action)) {
+    return {
+      ...state,
+      purchased: false
+    }
   }
 
   return state;

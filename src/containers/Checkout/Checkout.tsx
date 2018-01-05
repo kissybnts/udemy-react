@@ -9,6 +9,7 @@ import { ReduxState } from '../../index';
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
   totalPrice: number;
+  purchased: boolean;
 }
 
 class Checkout extends React.Component<Props, {}> {
@@ -22,7 +23,7 @@ class Checkout extends React.Component<Props, {}> {
   };
 
   render() {
-    if (this.props.ingredients === undefined) {
+    if (this.props.ingredients === undefined || this.props.purchased) {
       return <Redirect to={'/'}/>
     }
 
@@ -41,7 +42,8 @@ class Checkout extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burgerBuilder.ingredients,
-  totalPrice: state.burgerBuilder.totalPrice
+  totalPrice: state.burgerBuilder.totalPrice,
+  purchased: state.order.purchased,
 });
 
 export default connect(mapStateToProps)(Checkout);
