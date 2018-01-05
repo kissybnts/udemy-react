@@ -4,7 +4,7 @@ import {
   isFetchOrdersRequestFailAction, isFetchOrdersRequestStartAction,
   isFetchOrdersRequestSuccessAction, isPurchaseInitAction,
   isPurchaseRequestFailAction, isPurchaseRequestStartAction,
-  isPurchaseRequestSuccessAction
+  isPurchaseRequestSuccessAction, PurchaseRequestSuccessAction
 } from '../actions';
 import { updateObject } from '../utility';
 
@@ -20,35 +20,51 @@ const initialState: OrderState = {
   purchased: false,
 };
 
+const purchaseRequestSuccess = (state: OrderState, action: PurchaseRequestSuccessAction): OrderState => {
+  return updateObject(state, {
+    orders: state.orders.concat({ id: action.id, ...action.orderData }),
+    loading: false,
+    purchased: true,
+  });
+};
+
 const reducer = (state: OrderState = initialState, action: Action): OrderState => {
   if (isPurchaseRequestSuccessAction(action)) {
-    return updateObject(state, {
-      orders: state.orders.concat({ id: action.id, ...action.orderData }),
-      loading: false,
-      purchased: true,
-    });
-  } else if (isFetchOrdersRequestSuccessAction(action)) {
+    return purchaseRequestSuccess(state, action);
+  }
+
+  if (isFetchOrdersRequestSuccessAction(action)) {
     return updateObject(state, {
       orders: action.orders,
       loading: false,
     });
-  } else if (isPurchaseRequestFailAction(action)) {
+  }
+
+  if (isPurchaseRequestFailAction(action)) {
     return updateObject(state, {
       loading: false,
     });
-  } else if (isPurchaseRequestStartAction(action)) {
+  }
+
+  if (isPurchaseRequestStartAction(action)) {
     return updateObject(state, {
       loading: true,
     });
-  } else if (isPurchaseInitAction(action)) {
+  }
+
+  if (isPurchaseInitAction(action)) {
     return updateObject(state, {
       purchased: false
     });
-  } else if (isFetchOrdersRequestFailAction(action)) {
+  }
+
+  if (isFetchOrdersRequestFailAction(action)) {
     return updateObject(state, {
       loading: false,
     });
-  } else if (isFetchOrdersRequestStartAction(action)) {
+  }
+
+  if (isFetchOrdersRequestStartAction(action)) {
     return updateObject(state, {
       loading: true,
     });

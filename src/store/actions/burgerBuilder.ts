@@ -7,13 +7,13 @@ const FETCH_INGREDIENTS_REQUEST = 'FETCH_INGREDIENTS';
 const FETCH_INGREDIENTS_SUCCESS = 'FETCH_INGREDIENTS_SUCCESS';
 const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED';
 
-interface AddIngredientAction extends Action {
+export interface AddIngredientAction extends Action {
   ingredientName: string;
 }
 export const isAddIngredientAction = (action: Action): action is AddIngredientAction => action.type === ADD_INGREDIENT;
 export const createAddIngredientAction = (ingName: string): AddIngredientAction => ({ type: ADD_INGREDIENT, ingredientName: ingName });
 
-interface RemoveIngredientAction extends Action {
+export interface RemoveIngredientAction extends Action {
   ingredientName: string;
 }
 export const isRemoveIngredientAction = (action: Action): action is RemoveIngredientAction => action.type === REMOVE_INGREDIENT;
@@ -23,12 +23,12 @@ interface FetchIngredientsAction extends Action {}
 export const isFetchIngredientsAction = (action: Action): action is FetchIngredientsAction => action.type === FETCH_INGREDIENTS_REQUEST;
 export const createFetchIngredientsAction = (): FetchIngredientsAction => ({ type: FETCH_INGREDIENTS_REQUEST });
 
-interface FetchIngredientsSuccessAction extends Action {
+export interface FetchIngredientsSuccessAction extends Action {
   ingredients: Ingredients;
 }
 export const isFetchIngredientsSuccessAction = (action: Action): action is FetchIngredientsSuccessAction => action.type === FETCH_INGREDIENTS_SUCCESS;
 export const createFetchIngredientsSuccessAction = (ingredients: Ingredients): FetchIngredientsSuccessAction => ({ type: FETCH_INGREDIENTS_SUCCESS, ingredients: ingredients });
 
-interface FetchIngredientsFailedAction extends Action {}
+export interface FetchIngredientsFailedAction extends Action {}
 export const isFetchIngredientsFailedAction = (action: Action): action is FetchIngredientsFailedAction => action.type === FETCH_INGREDIENTS_FAILED;
 export const createFetchIngredientsFailedAction = (): FetchIngredientsAction => ({ type: FETCH_INGREDIENTS_FAILED });

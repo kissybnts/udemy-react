@@ -8,7 +8,11 @@ import {
   createFetchIngredientsSuccessAction,
   isFetchIngredientsSuccessAction,
   createFetchIngredientsFailedAction,
-  isFetchIngredientsFailedAction
+  isFetchIngredientsFailedAction,
+  FetchIngredientsSuccessAction,
+  RemoveIngredientAction,
+  AddIngredientAction,
+  FetchIngredientsFailedAction,
 } from './burgerBuilder';
 import {
   isPurchaseRequestAction,
@@ -30,6 +34,14 @@ import {
   isFetchOrdersRequestFailAction,
   isFetchOrdersRequestStartAction,
   isFetchOrdersRequestSuccessAction,
+  PurchaseRequestSuccessAction,
+  FetchOrdersRequestAction,
+  FetchOrdersRequestFailAction,
+  FetchOrdersRequestStartAction,
+  FetchOrdersRequestSuccessAction,
+  PurchaseInitAction,
+  PurchaseRequestFailAction,
+  PurchaseRequestStartAction,
 } from './order'
 
 
@@ -63,4 +75,16 @@ export {
   isFetchOrdersRequestFailAction,
   isFetchOrdersRequestStartAction,
   isFetchOrdersRequestSuccessAction,
+  FetchIngredientsSuccessAction,
+  RemoveIngredientAction,
+  AddIngredientAction,
+  FetchIngredientsFailedAction,
+  PurchaseRequestSuccessAction,
+  FetchOrdersRequestAction,
+  FetchOrdersRequestFailAction,
+  FetchOrdersRequestStartAction,
+  FetchOrdersRequestSuccessAction,
+  PurchaseInitAction,
+  PurchaseRequestFailAction,
+  PurchaseRequestStartAction,
 };
