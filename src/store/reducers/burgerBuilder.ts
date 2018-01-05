@@ -1,6 +1,7 @@
 import { Ingredients } from '../../containers/BurgerBuilder/BurgerBuilder';
 import { isAddIngredientAction, isFetchIngredientsFailedAction, isFetchIngredientsSuccessAction, isRemoveIngredientAction } from '../actions/index';
 import { Action } from 'redux';
+import { updateObject } from '../utility';
 
 export interface BurgerBuilderState {
   ingredients?: Ingredients;
@@ -30,14 +31,14 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
         return state;
       }
 
-      return {
-        ...state,
-        ingredients: {
-          ...ingredients,
-          [action.ingredientName]: ingredients[action.ingredientName] + 1
-        },
-        totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
-      };
+      const updatedIngredients: Ingredients = updateObject(state.ingredients, {
+        [action.ingredientName]: ingredients[action.ingredientName] + 1
+      });
+
+      return updateObject(state, {
+        ingredients: updatedIngredients,
+        totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
+      });
     }
   } else if (isRemoveIngredientAction(action)) {
     const ingredients = state.ingredients;
@@ -46,34 +47,36 @@ const reducer = (state: BurgerBuilderState = initialState, action: Action) => {
       if (oldAmount === undefined || oldAmount <= 0) {
         return state;
       }
-      return {
-        ...state,
-        ingredients: {
-          ...ingredients,
-          [action.ingredientName]: ingredients[action.ingredientName] - 1
-        },
-        totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
-      };
+
+      const updatedIngredients: Ingredients = updateObject(state.ingredients, {
+        [action.ingredientName]: ingredients[action.ingredientName] - 1
+      });
+
+      return updateObject(state, {
+        ingredients: updatedIngredients,
+        totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName],
+      });
     }
   } else if (isFetchIngredientsSuccessAction(action)) {
     const price: number = Object.keys(action.ingredients).map(key => action.ingredients[key] * INGREDIENT_PRICE[key]).reduce((prev, curr) => prev + curr);
     const totalPrice = price + 4;
-    return {
-      ...state,
-      ingredients: {
-        Salad: action.ingredients.Salad,
-        Bacon: action.ingredients.Bacon,
-        Cheese: action.ingredients.Cheese,
-        Meat: action.ingredients.Meat
-      },
+
+    const updatedIngredients: Ingredients = updateObject(state.ingredients, {
+      Salad: action.ingredients.Salad,
+      Bacon: action.ingredients.Bacon,
+      Cheese: action.ingredients.Cheese,
+      Meat: action.ingredients.Meat,
+    });
+
+    return updateObject(state, {
+      ingredients: updatedIngredients,
       totalPrice: totalPrice,
       error: false
-    }
+    });
   } else if (isFetchIngredientsFailedAction(action)) {
-    return {
-      ...state,
+    return updateObject(state, {
       error: true
-    }
+    });
   }
   return state;
 };

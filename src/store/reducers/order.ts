@@ -6,6 +6,7 @@ import {
   isPurchaseRequestFailAction, isPurchaseRequestStartAction,
   isPurchaseRequestSuccessAction
 } from '../actions';
+import { updateObject } from '../utility';
 
 export interface OrderState {
   orders: Order[];
@@ -21,43 +22,36 @@ const initialState: OrderState = {
 
 const reducer = (state: OrderState = initialState, action: Action): OrderState => {
   if (isPurchaseRequestSuccessAction(action)) {
-    return {
-      ...state,
+    return updateObject(state, {
       orders: state.orders.concat({ id: action.id, ...action.orderData }),
       loading: false,
       purchased: true,
-    };
+    });
   } else if (isFetchOrdersRequestSuccessAction(action)) {
-    return {
-      ...state,
+    return updateObject(state, {
       orders: action.orders,
-      loading: false
-    }
+      loading: false,
+    });
   } else if (isPurchaseRequestFailAction(action)) {
-    return {
-      ...state,
-      loading: false
-    };
+    return updateObject(state, {
+      loading: false,
+    });
   } else if (isPurchaseRequestStartAction(action)) {
-    return {
-      ...state,
-      loading: true
-    };
+    return updateObject(state, {
+      loading: true,
+    });
   } else if (isPurchaseInitAction(action)) {
-    return {
-      ...state,
+    return updateObject(state, {
       purchased: false
-    }
+    });
   } else if (isFetchOrdersRequestFailAction(action)) {
-    return {
-      ...state,
-      loading: false
-    }
+    return updateObject(state, {
+      loading: false,
+    });
   } else if (isFetchOrdersRequestStartAction(action)) {
-    return {
-      ...state,
-      loading: true
-    }
+    return updateObject(state, {
+      loading: true,
+    });
   }
 
   return state;
