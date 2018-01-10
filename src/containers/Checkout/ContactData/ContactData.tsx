@@ -27,15 +27,15 @@ interface State {
 }
 
 interface Form {
-    name: ElementInfo;
-    email: ElementInfo;
-    country: ElementInfo;
-    street: ElementInfo;
-    zipCode: ElementInfo;
-    deliveryMethod: ElementInfo;
+    name: FormElementInfo;
+    email: FormElementInfo;
+    country: FormElementInfo;
+    street: FormElementInfo;
+    zipCode: FormElementInfo;
+    deliveryMethod: FormElementInfo;
 }
 
-interface ElementInfo {
+export interface FormElementInfo {
   elementType: InputType;
   elementConfig: any;
   value: string;
@@ -170,7 +170,7 @@ class ContactData extends React.Component<Props, State> {
 
   inputChangedHandler = (event: Event, identifier: string) => {
     const updatedForm = { ...this.state.form };
-    const updatedElement: ElementInfo = { ...updatedForm[identifier] };
+    const updatedElement: FormElementInfo = { ...updatedForm[identifier] };
     updatedElement.value = event.target['value'];
     updatedElement.isValid = this.checkValidity(updatedElement.value, updatedElement.validation);
     updatedElement.isTouched = true;
