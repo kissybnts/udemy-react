@@ -1,10 +1,17 @@
 import * as React from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { FormElementInfo, ValidationRule } from '../Checkout/ContactData/ContactData';
 import Input, { InputTypes } from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
-import { ChangeEvent } from 'react';
 import * as cssClasses from './Auth.css';
 import { RouteComponentProps } from 'react-router';
+import { Dispatch } from 'redux';
+import { AuthAction, createAuthRequestAction } from '../../store/actions/auth';
+import { connect } from 'react-redux';
+
+interface Props extends RouteComponentProps<{}> {
+  onAuth: (email: string, password: string) => void;
+}
 
 interface State {
   form: FormElements;
@@ -15,7 +22,7 @@ interface FormElements {
   password: FormElementInfo;
 }
 
-class Auth extends React.Component<RouteComponentProps<{}>, State> {
+class Auth extends React.Component<Props, State> {
   state: State = {
     form: {
       email: {
@@ -47,9 +54,9 @@ class Auth extends React.Component<RouteComponentProps<{}>, State> {
         isTouched: false
       },
     },
-  }
+  };
 
-  handleChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  inputChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const updatedForm = {
       ...this.state.form,
@@ -61,7 +68,12 @@ class Auth extends React.Component<RouteComponentProps<{}>, State> {
       }
     };
 
-    this.setState({ form: updatedForm });
+    this.setState({form: updatedForm});
+  };
+
+  authRequestHandler = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.onAuth(this.state.form.email.value, this.state.form.password.value);
   }
 
   render() {
@@ -73,7 +85,7 @@ class Auth extends React.Component<RouteComponentProps<{}>, State> {
           inputType={info.elementType}
           attributes={info.elementConfig}
           value={info.value}
-          changed={(event) => this.handleChangedHandler(event)}
+          changed={(event) => this.inputChangedHandler(event)}
           isValid={info.isValid}
           isTouched={info.isTouched}
         />
@@ -82,7 +94,7 @@ class Auth extends React.Component<RouteComponentProps<{}>, State> {
 
     return (
       <div className={cssClasses.Auth}>
-        <form>
+        <form onSubmit={this.authRequestHandler}>
           {form}
           <Button type={'Success'}>Submit</Button>
         </form>
@@ -116,4 +128,10 @@ class Auth extends React.Component<RouteComponentProps<{}>, State> {
   }
 }
 
-export default Auth;
+const mapDispatchToProps = (dispatch: Dispatch<AuthAction>) => ({
+  onAuth: (email: string, password: string) => {
+    dispatch(createAuthRequestAction(email, password));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(Auth);
