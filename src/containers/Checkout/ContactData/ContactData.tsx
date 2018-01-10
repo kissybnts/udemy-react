@@ -48,6 +48,7 @@ export interface ValidationRule {
   required?: boolean;
   maxLength?: number;
   minLength?: number;
+  isEmail?: boolean;
 }
 
 class ContactData extends React.Component<Props, State> {
@@ -76,7 +77,8 @@ class ContactData extends React.Component<Props, State> {
         },
         value: '',
         validation: {
-          required: true
+          required: true,
+          isEmail: true,
         },
         isValid: false,
         isTouched: false
@@ -224,6 +226,12 @@ class ContactData extends React.Component<Props, State> {
 
     if (rule.minLength && isValid) {
       isValid = value.length >= rule.minLength;
+    }
+
+    if (rule.isEmail && isValid) {
+      const pattern =
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value);
     }
 
     return isValid;

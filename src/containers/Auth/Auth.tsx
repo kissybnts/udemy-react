@@ -4,6 +4,7 @@ import Input, { InputTypes } from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import { ChangeEvent } from 'react';
 import * as cssClasses from './Auth.css';
+import { RouteComponentProps } from 'react-router';
 
 interface State {
   form: FormElements;
@@ -14,19 +15,19 @@ interface FormElements {
   password: FormElementInfo;
 }
 
-class Auth extends React.Component<{}, State> {
+class Auth extends React.Component<RouteComponentProps<{}>, State> {
   state: State = {
     form: {
       email: {
         elementType: InputTypes.Input,
         elementConfig: {
           type: 'email',
-          nam: 'email',
+          name: 'email',
           placeholder: 'Email Address'
         },
         value: '',
         validation: {
-          required: true
+          isEmail: true,
         },
         isValid: false,
         isTouched: false
@@ -40,8 +41,7 @@ class Auth extends React.Component<{}, State> {
         },
         value: '',
         validation: {
-          required: true,
-          minLength: 8
+          minLength: 8,
         },
         isValid: false,
         isTouched: false
@@ -104,6 +104,12 @@ class Auth extends React.Component<{}, State> {
 
     if (rule.minLength && isValid) {
       isValid = value.length >= rule.minLength;
+    }
+
+    if (rule.isEmail && isValid) {
+      const pattern =
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value);
     }
 
     return isValid;
