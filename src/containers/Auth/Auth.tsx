@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { FormElementInfo } from '../Checkout/ContactData/ContactData';
+import { FormElementInfo, ValidationRule } from '../Checkout/ContactData/ContactData';
 import Input, { InputTypes } from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import { ChangeEvent } from 'react';
+import * as cssClasses from './Auth.css';
 
 interface State {
   form: FormElements;
@@ -49,13 +50,17 @@ class Auth extends React.Component<{}, State> {
   }
 
   handleChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const updatedForm = { ...this.state.form };
-    const updatedFormElement: FormElementInfo = { ...updatedForm[event.target.name] };
-    updatedFormElement.value = event.target.value;
-    // TODO check validity
-    updatedFormElement.isTouched = true;
-    updatedForm[event.target.name] = updatedFormElement;
-    // TODO check form elements validity
+    const name = event.target.name;
+    const updatedForm = {
+      ...this.state.form,
+      [name]: {
+        ...this.state.form[name],
+        value: event.target.value,
+        isValid: this.checkValidity(event.target.value, this.state.form[name].validation),
+        isTouched: true,
+      }
+    };
+
     this.setState({ form: updatedForm });
   }
 
@@ -76,13 +81,32 @@ class Auth extends React.Component<{}, State> {
     });
 
     return (
-      <div>
+      <div className={cssClasses.Auth}>
         <form>
           {form}
           <Button type={'Success'}>Submit</Button>
         </form>
       </div>
     );
+  }
+
+  // TODO extract as common method
+  private checkValidity(value: string, rule: ValidationRule): boolean {
+    let isValid = true;
+
+    if (rule.required && isValid) {
+      isValid = value.trim() !== '';
+    }
+
+    if (rule.maxLength && isValid) {
+      isValid = value.length <= rule.maxLength;
+    }
+
+    if (rule.minLength && isValid) {
+      isValid = value.length >= rule.minLength;
+    }
+
+    return isValid;
   }
 }
 
