@@ -1,4 +1,4 @@
-import { AuthAction, isAuthRequestFailAction, isAuthRequestStartAction, isAuthRequestSuccessAction } from '../actions/auth';
+import { AuthAction, isAuthLogoutAction, isAuthRequestFailAction, isAuthRequestStartAction, isAuthRequestSuccessAction } from '../actions/auth';
 import { updateObject } from '../utility';
 
 export interface AuthState {
@@ -37,6 +37,13 @@ const reducer = (state: AuthState = initialState, action: AuthAction): AuthState
   if (isAuthRequestStartAction(action)) {
     return updateObject(state, {
       loading: true
+    });
+  }
+
+  if (isAuthLogoutAction(action)) {
+    return updateObject(state, {
+      idToken: undefined,
+      userId: undefined,
     });
   }
 

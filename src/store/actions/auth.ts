@@ -5,6 +5,7 @@ enum ActionTypes {
   AuthRequestStart = 'AuthRequestStart',
   AuthRequestSuccess = 'AuthRequestSuccess',
   AuthRequestFail = 'AuthRequestFail',
+  AuthLogout = 'AuthLogout',
 }
 
 export interface AuthAction {
@@ -45,3 +46,7 @@ export const createAuthRequestFailAction = (error: any): AuthRequestFailAction =
   type: ActionTypes.AuthRequestFail,
   error: error,
 });
+
+export interface AuthLogoutAction extends AuthAction {}
+export const isAuthLogoutAction = (action: AuthAction): action is AuthLogoutAction => action.type === ActionTypes.AuthLogout;
+export const createAuthLogoutAction = (): AuthLogoutAction => ({ type: ActionTypes.AuthLogout });

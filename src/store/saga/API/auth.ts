@@ -1,9 +1,10 @@
-import { call, put, take } from 'redux-saga/effects';
+import { call, fork, put, take } from 'redux-saga/effects';
 import {
-  AuthRequestAction, createAuthRequestFailAction, createAuthRequestStartAction, createAuthRequestSuccessAction,
+  AuthRequestAction, createAuthLogoutAction, createAuthRequestFailAction, createAuthRequestStartAction, createAuthRequestSuccessAction,
   isAuthRequestAction
 } from '../../actions/auth';
 import axios from 'axios';
+import { delay } from 'redux-saga';
 
 export interface AuthResponse {
   kind: string;
@@ -15,6 +16,7 @@ export interface AuthResponse {
 }
 
 export function* handleAuthRequest() {
+  let task;
   while (true) {
     const action: AuthRequestAction = yield take(isAuthRequestAction);
     yield put(createAuthRequestStartAction());
@@ -34,9 +36,18 @@ export function* handleAuthRequest() {
 
       if (response.status && response.status.toString().startsWith('2')) {
         yield put(createAuthRequestSuccessAction(response.data));
+        if (task && task.isRunning()) {
+          task.cancel();
+        }
+        task = yield fork(handleReserveLogout);
       }
-    } catch(err) {
+    } catch (err) {
       yield put(createAuthRequestFailAction(err.response.data.error));
     }
   }
+}
+
+function* handleReserveLogout() {
+  yield call(delay, 10000);
+  yield put(createAuthLogoutAction());
 }
