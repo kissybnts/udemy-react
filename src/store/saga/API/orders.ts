@@ -2,7 +2,8 @@ import axios from '../../../axios-orders';
 import { call, put, take } from 'redux-saga/effects';
 import {
   createFetchOrdersRequestFailAction, createFetchOrdersRequestStartAction, createFetchOrdersRequestSuccessAction,
-  createPurchaseRequestFailAction, createPurchaseRequestStartAction, createPurchaseRequestSuccessAction, isFetchOrdersRequestAction,
+  createPurchaseRequestFailAction, createPurchaseRequestStartAction, createPurchaseRequestSuccessAction, FetchOrdersRequestAction,
+  isFetchOrdersRequestAction,
   isPurchaseRequestAction,
   PurchaseRequestAction
 } from '../../actions';
@@ -12,7 +13,7 @@ export function* handlePurchaseRequest() {
   while (true) {
     const action: PurchaseRequestAction = yield take(isPurchaseRequestAction);
     yield put(createPurchaseRequestStartAction());
-    const response = yield call(axios.post, '/orders.json', action.orderData);
+    const response = yield call(axios.post, `/orders.json?auth=${action.token || ''}`, action.orderData);
     if (response.status && response.status.toString().startsWith('2')) {
       yield put(createPurchaseRequestSuccessAction(response.data.name, action.orderData));
     } else {
@@ -23,9 +24,9 @@ export function* handlePurchaseRequest() {
 
 export function* handleFetchOrdersRequest() {
   while (true) {
-    yield take(isFetchOrdersRequestAction);
+    const action: FetchOrdersRequestAction = yield take(isFetchOrdersRequestAction);
     yield put(createFetchOrdersRequestStartAction());
-    const response = yield call(axios.get, '/orders.json');
+    const response = yield call(axios.get, `/orders.json?auth=${action.token || ''}`);
     if (response.status && response.status.toString().startsWith('2')) {
       const orders: Order[] = response.data !== null ? Object.keys(response.data).map(key => {
         return {

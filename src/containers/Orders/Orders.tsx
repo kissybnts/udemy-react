@@ -14,7 +14,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 interface Props extends RouteComponentProps<{}> {
   orders: Order[];
   loading: boolean;
-  onInitOrders: () => void;
+  token: string;
+  onInitOrders: (token: string) => void;
 }
 
 export interface Order extends OrderData{
@@ -37,7 +38,7 @@ export interface OrderData {
 
 class Orders extends React.Component<Props, {}> {
   componentDidMount(){
-    this.props.onInitOrders();
+    this.props.onInitOrders(this.props.token);
   }
 
   render() {
@@ -58,10 +59,11 @@ class Orders extends React.Component<Props, {}> {
 const mapStateToProps = (state: ReduxState) => ({
   orders: state.order.orders,
   loading: state.order.loading,
+  token: state.auth.idToken,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onInitOrders: () => dispatch(createFetchOrdersRequestAction())
+  onInitOrders: (token: string) => dispatch(createFetchOrdersRequestAction(token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

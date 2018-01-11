@@ -18,7 +18,8 @@ interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
   totalPrice: number;
   loading: boolean;
-  onOrderBurger: (orderData: any) => void;
+  token: string;
+  onOrderBurger: (orderData: any, token: string) => void;
 }
 
 interface State {
@@ -167,7 +168,7 @@ class ContactData extends React.Component<Props, State> {
       deliveryMethod: formData['deliveryMethod']
     };
 
-    this.props.onOrderBurger(data);
+    this.props.onOrderBurger(data, this.props.token);
   };
 
   inputChangedHandler = (event: Event, identifier: string) => {
@@ -252,11 +253,12 @@ class ContactData extends React.Component<Props, State> {
 const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burgerBuilder.ingredients,
   totalPrice: state.burgerBuilder.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
+  token: state.auth.idToken,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onOrderBurger: (orderData: any) => dispatch(createPurchaseRequestAction(orderData))
+  onOrderBurger: (orderData: any, token: string) => dispatch(createPurchaseRequestAction(orderData, token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

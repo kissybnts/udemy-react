@@ -14,9 +14,13 @@ const FETCH_ORDERS_REQUEST_START = 'FETCH_ORDERS_REQUEST_START';
 
 export interface PurchaseRequestAction extends Action {
   orderData: OrderData;
+  token: string;
 }
 export const isPurchaseRequestAction = (action: Action): action is PurchaseRequestAction => action.type === PURCHASE_REQUEST;
-export const createPurchaseRequestAction = (orderData: OrderData): PurchaseRequestAction => ({ type: PURCHASE_REQUEST, orderData: orderData });
+export const createPurchaseRequestAction = (orderData: OrderData, token: string): PurchaseRequestAction => ({
+  type: PURCHASE_REQUEST,
+  orderData: orderData, token: token,
+});
 
 export interface PurchaseRequestStartAction extends Action {}
 export const isPurchaseRequestStartAction = (action: Action): action is PurchaseRequestStartAction => action.type === PURCHASE_REQUEST_START;
@@ -39,9 +43,14 @@ export interface PurchaseInitAction extends Action {}
 export const isPurchaseInitAction = (action: Action): action is PurchaseInitAction => action.type === PURCHASE_INIT;
 export const createPurchaseInitAction = (): PurchaseInitAction => ({ type: PURCHASE_INIT });
 
-export interface FetchOrdersRequestAction extends Action {}
+export interface FetchOrdersRequestAction extends Action {
+  token: string;
+}
 export const isFetchOrdersRequestAction = (action: Action): action is FetchOrdersRequestAction => action.type === FETCH_ORDERS_REQUEST;
-export const createFetchOrdersRequestAction = (): FetchOrdersRequestAction => ({ type: FETCH_ORDERS_REQUEST });
+export const createFetchOrdersRequestAction = (token: string): FetchOrdersRequestAction => ({
+  type: FETCH_ORDERS_REQUEST,
+  token: token,
+});
 
 export interface FetchOrdersRequestSuccessAction extends Action {
   orders: Order[];
