@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import burgerBuilderReducer, { BurgerBuilderState } from './store/reducers/burgerBuilder';
 import orderReducer, { OrderState } from './store/reducers/order';
+import authReducer, { AuthState } from './store/reducers/auth';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './store/saga/root';
@@ -16,8 +17,9 @@ const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compo
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   burgerBuilder: burgerBuilderReducer,
-  order: orderReducer
+  order: orderReducer,
 });
 
 const store = createStore(
@@ -28,6 +30,7 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 export type ReduxState = {
+  auth: AuthState,
   burgerBuilder: BurgerBuilderState,
   order: OrderState
 }
