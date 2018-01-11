@@ -39,7 +39,7 @@ export function* handleAuthRequest() {
         if (task && task.isRunning()) {
           task.cancel();
         }
-        task = yield fork(handleReserveLogout);
+        task = yield fork(handleReserveLogout, parseInt(response.data.expiresIn, 10));
       }
     } catch (err) {
       yield put(createAuthRequestFailAction(err.response.data.error));
@@ -47,7 +47,7 @@ export function* handleAuthRequest() {
   }
 }
 
-function* handleReserveLogout() {
-  yield call(delay, 10000);
+function* handleReserveLogout(seconds: number) {
+  yield call(delay, seconds * 1000);
   yield put(createAuthLogoutAction());
 }
