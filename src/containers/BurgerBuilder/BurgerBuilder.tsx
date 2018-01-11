@@ -17,7 +17,6 @@ import {
 } from '../../store/actions/index';
 import { ReduxState } from '../../index';
 
-
 interface Props extends RouteComponentProps<{}> {
   ingredients?: Ingredients;
   totalPrice: number;
@@ -50,16 +49,16 @@ class BurgerBuilder extends React.Component<Props, State> {
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
-  };
+  }
 
   purchaseCancelHandler = () => {
     this.setState({ purchasing: false });
-  };
+  }
 
   purchaseContinueHandler = () => {
     this.props.onInitPurchase();
     this.props.history.push('/checkout');
-  };
+  }
 
   render() {
     const ingredients = this.props.ingredients;
@@ -90,12 +89,14 @@ class BurgerBuilder extends React.Component<Props, State> {
         </React.Fragment>
       );
 
-      orderSummary = <OrderSummary
-        ingredients={ingredients}
-        purchaseCanceled={this.purchaseCancelHandler}
-        purchaseContinued={this.purchaseContinueHandler}
-        price={this.props.totalPrice}
-      />;
+      orderSummary = (
+        <OrderSummary
+          ingredients={ingredients}
+          purchaseCanceled={this.purchaseCancelHandler}
+          purchaseContinued={this.purchaseContinueHandler}
+          price={this.props.totalPrice}
+        />
+      );
     }
 
     return (

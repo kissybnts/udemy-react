@@ -16,15 +16,15 @@ class Checkout extends React.Component<Props, {}> {
 
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
-  };
+  }
 
   checkoutContinuedHandler = () => {
     this.props.history.replace('/checkout/contact-data');
-  };
+  }
 
   render() {
     if (this.props.ingredients === undefined || this.props.purchased) {
-      return <Redirect to={'/'}/>
+      return <Redirect to={'/'}/>;
     }
 
     return (
@@ -34,7 +34,7 @@ class Checkout extends React.Component<Props, {}> {
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
-        <Route path={this.props.match.url + '/contact-data'} render={(props) => (<ContactData {...props} />) }  />
+        <Route path={this.props.match.url + '/contact-data'} render={(props) => (<ContactData {...props} />)}  />
       </div>
     );
   }

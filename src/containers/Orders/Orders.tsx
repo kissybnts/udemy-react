@@ -18,7 +18,7 @@ interface Props extends RouteComponentProps<{}> {
   onInitOrders: (token: string) => void;
 }
 
-export interface Order extends OrderData{
+export interface Order extends OrderData {
   id: string;
 }
 
@@ -30,20 +30,20 @@ export interface OrderData {
       street: string;
       postalCode: string;
     }
-  }
+  };
   ingredients: Ingredients;
   totalPrice: number;
   deliveryMethod: string;
 }
 
 class Orders extends React.Component<Props, {}> {
-  componentDidMount(){
+  componentDidMount() {
     this.props.onInitOrders(this.props.token);
   }
 
   render() {
     if (this.props.loading) {
-      return <Spinner />
+      return <Spinner />;
     }
     const orders = this.props.orders.map(order => (
       <Order key={order.id} ingredients={order.ingredients} price={+order.totalPrice}/>

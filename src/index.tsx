@@ -33,7 +33,7 @@ export type ReduxState = {
   auth: AuthState,
   burgerBuilder: BurgerBuilderState,
   order: OrderState
-}
+};
 
 const app = (
   <Provider store={store}>

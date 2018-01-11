@@ -13,7 +13,9 @@ const navigationItem: React.SFC<Props> = props => (
       to={props.link}
       exact={props.exact}
       activeClassName={cssClasses.Active}
-    >{props.children}</NavLink>
+    >
+      {props.children}
+    </NavLink>
   </li>
 );
 

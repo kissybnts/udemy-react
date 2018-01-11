@@ -42,8 +42,7 @@ import {
   PurchaseInitAction,
   PurchaseRequestFailAction,
   PurchaseRequestStartAction,
-} from './order'
-
+} from './order';
 
 export {
   isRemoveIngredientAction,

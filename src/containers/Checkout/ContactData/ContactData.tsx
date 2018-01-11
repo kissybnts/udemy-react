@@ -169,7 +169,7 @@ class ContactData extends React.Component<Props, State> {
     };
 
     this.props.onOrderBurger(data, this.props.token);
-  };
+  }
 
   inputChangedHandler = (event: Event, identifier: string) => {
     const updatedForm = { ...this.state.form };
@@ -180,7 +180,7 @@ class ContactData extends React.Component<Props, State> {
     updatedForm[identifier] = updatedElement;
     const formIsValid = this.checkFormValidity(updatedForm);
     this.setState({ form: updatedForm, formIsValid: formIsValid });
-  };
+  }
 
   render () {
     const inputs = Object.keys(this.state.form)
@@ -204,7 +204,7 @@ class ContactData extends React.Component<Props, State> {
     );
 
     if (this.props.loading) {
-      form = <Spinner/>
+      form = <Spinner/>;
     }
 
     return (
