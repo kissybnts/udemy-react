@@ -29,7 +29,7 @@ const reducer = (state: AuthState = initialState, action: AuthAction): AuthState
     return updateObject(state, {
       idToken: undefined,
       userId: undefined,
-      error: action.error,
+      error: action.error.message,
       loading: false,
     });
   }

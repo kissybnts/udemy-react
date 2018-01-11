@@ -8,8 +8,12 @@ import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { AuthAction, createAuthRequestAction } from '../../store/actions/auth';
 import { connect } from 'react-redux';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import { ReduxState } from '../../index';
 
 interface Props extends RouteComponentProps<{}> {
+  loading: boolean;
+  error: any;
   onAuth: (email: string, password: string, isSignUp: boolean) => void;
 }
 
@@ -87,6 +91,10 @@ class Auth extends React.Component<Props, State> {
   }
 
   render() {
+    if (this.props.loading) {
+      return (<Spinner/>);
+    }
+
     const form = Object.keys(this.state.form).map(key => {
       const info: FormElementInfo = this.state.form[key];
       return (
@@ -102,8 +110,11 @@ class Auth extends React.Component<Props, State> {
       );
     });
 
+    const error = this.props.error ? <p className={cssClasses.Error}>ERROR: {this.props.error}</p> : null;
+
     return (
       <div className={cssClasses.Auth}>
+        {error}
         <form onSubmit={this.authRequestHandler}>
           {form}
           <Button type={'Success'}>Submit</Button>
@@ -144,10 +155,15 @@ class Auth extends React.Component<Props, State> {
   }
 }
 
+const mapStateToProps = (state: ReduxState) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch<AuthAction>) => ({
   onAuth: (email: string, password: string, isSignUp: boolean) => {
     dispatch(createAuthRequestAction(email, password, isSignUp));
   },
 });
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

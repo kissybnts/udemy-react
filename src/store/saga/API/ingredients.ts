@@ -11,7 +11,7 @@ export function* handleFetchIngredients() {
     if (response.status && response.status.toString().startsWith('2')) {
       yield put(createFetchIngredientsSuccessAction({ ...response.data }));
     } else {
-      yield put(createFetchIngredientsFailedAction())
+      yield put(createFetchIngredientsFailedAction());
     }
   }
 }
