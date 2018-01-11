@@ -23,9 +23,12 @@ export function* handleAuthRequest() {
       password: action.password,
       returnSecureToken: true
     };
+
+    const url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/${action.isSignUp ? 'signupNewUser' : 'verifyPassword'}?key=AIzaSyDFnvtoqcxvEKKzD01EoCZrUTS60855fuI`;
+
     const response = yield call(
       axios.post,
-      'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDFnvtoqcxvEKKzD01EoCZrUTS60855fuI',
+      url,
       requestData);
 
     if (response.status && response.status.toString().startsWith('2')) {

@@ -14,12 +14,14 @@ export interface AuthAction {
 export interface AuthRequestAction extends AuthAction {
   email: string;
   password: string;
+  isSignUp: boolean;
 }
 export const isAuthRequestAction = (action: AuthAction): action is AuthRequestAction => action.type === ActionTypes.AuthRequest;
-export const createAuthRequestAction = (email: string, password: string): AuthRequestAction => ({
+export const createAuthRequestAction = (email: string, password: string, isSignUp: boolean): AuthRequestAction => ({
   type: ActionTypes.AuthRequest,
   email: email,
   password: password,
+  isSignUp: isSignUp,
 });
 
 export interface AuthRequestStartAction extends AuthAction {}

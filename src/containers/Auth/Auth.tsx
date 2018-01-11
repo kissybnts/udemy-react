@@ -10,11 +10,12 @@ import { AuthAction, createAuthRequestAction } from '../../store/actions/auth';
 import { connect } from 'react-redux';
 
 interface Props extends RouteComponentProps<{}> {
-  onAuth: (email: string, password: string) => void;
+  onAuth: (email: string, password: string, isSignUp: boolean) => void;
 }
 
 interface State {
   form: FormElements;
+  isSignUp: boolean;
 }
 
 interface FormElements {
@@ -54,6 +55,7 @@ class Auth extends React.Component<Props, State> {
         isTouched: false
       },
     },
+    isSignUp: true,
   };
 
   inputChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -69,11 +71,19 @@ class Auth extends React.Component<Props, State> {
     };
 
     this.setState({form: updatedForm});
-  };
+  }
 
   authRequestHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.onAuth(this.state.form.email.value, this.state.form.password.value);
+    this.props.onAuth(this.state.form.email.value, this.state.form.password.value, this.state.isSignUp);
+  }
+
+  switchModeHandler = () => {
+    this.setState(prev => {
+      return {
+        isSignUp: !prev.isSignUp
+      };
+    });
   }
 
   render() {
@@ -98,6 +108,12 @@ class Auth extends React.Component<Props, State> {
           {form}
           <Button type={'Success'}>Submit</Button>
         </form>
+        <Button
+          type={'Danger'}
+          clicked={this.switchModeHandler}
+        >
+          Switch to {this.state.isSignUp ? 'Sign in' : 'Sign up'}
+        </Button>
       </div>
     );
   }
@@ -129,8 +145,8 @@ class Auth extends React.Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<AuthAction>) => ({
-  onAuth: (email: string, password: string) => {
-    dispatch(createAuthRequestAction(email, password));
+  onAuth: (email: string, password: string, isSignUp: boolean) => {
+    dispatch(createAuthRequestAction(email, password, isSignUp));
   },
 });
 
