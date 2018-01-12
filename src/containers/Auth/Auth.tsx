@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ChangeEvent, FormEvent } from 'react';
-import { FormElementInfo, ValidationRule } from '../Checkout/ContactData/ContactData';
+import { FormElementInfo } from '../Checkout/ContactData/ContactData';
 import Input, { InputTypes } from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as cssClasses from './Auth.css';
