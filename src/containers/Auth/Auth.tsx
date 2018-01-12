@@ -6,7 +6,7 @@ import Button from '../../components/UI/Button/Button';
 import * as cssClasses from './Auth.css';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-import { AuthAction, createAuthRequestAction } from '../../store/actions/auth';
+import { AuthAction, createAuthRequestAction, createSetAuthRedirectPathAction } from '../../store/actions/auth';
 import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { ReduxState } from '../../index';
@@ -15,7 +15,10 @@ interface Props extends RouteComponentProps<{}> {
   loading: boolean;
   error: any;
   isAuthenticated: boolean;
+  burgerIsBuilding: boolean;
+  redirectPath: string;
   onAuth: (email: string, password: string, isSignUp: boolean) => void;
+  onResetAuthRedirectPath: () => void;
 }
 
 interface State {
@@ -63,6 +66,12 @@ class Auth extends React.Component<Props, State> {
     isSignUp: true,
   };
 
+  componentDidMount() {
+    if (!this.props.burgerIsBuilding && this.props.redirectPath !== '/') {
+      this.props.onResetAuthRedirectPath();
+    }
+  }
+
   inputChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const updatedForm = {
@@ -93,7 +102,7 @@ class Auth extends React.Component<Props, State> {
 
   render() {
     if (this.props.isAuthenticated) {
-      return <Redirect to={'/'}/>;
+      return <Redirect to={this.props.redirectPath}/>;
     }
 
     if (this.props.loading) {
@@ -164,12 +173,15 @@ const mapStateToProps = (state: ReduxState) => ({
   loading: state.auth.loading,
   error: state.auth.error,
   isAuthenticated: state.auth.idToken !== undefined,
+  burgerIsBuilding: state.burgerBuilder.isBuilding,
+  redirectPath: state.auth.redirectPath,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AuthAction>) => ({
   onAuth: (email: string, password: string, isSignUp: boolean) => {
     dispatch(createAuthRequestAction(email, password, isSignUp));
   },
+  onResetAuthRedirectPath: () => { dispatch(createSetAuthRedirectPathAction('/')); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

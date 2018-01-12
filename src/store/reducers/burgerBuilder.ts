@@ -10,12 +10,14 @@ export interface BurgerBuilderState {
   ingredients?: Ingredients;
   totalPrice: number;
   error: boolean;
+  isBuilding: boolean;
 }
 
 const initialState: BurgerBuilderState = {
   ingredients: undefined,
   totalPrice: 4,
-  error: false
+  error: false,
+  isBuilding: false,
 };
 
 const INGREDIENT_PRICE = {
@@ -40,6 +42,7 @@ const addIngredient = (state: BurgerBuilderState, action: AddIngredientAction): 
     return updateObject(state, {
       ingredients: updatedIngredients,
       totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
+      isBuilding: true,
     });
   } else {
     return state;
@@ -61,6 +64,7 @@ const removeIngredient = (state: BurgerBuilderState, action: RemoveIngredientAct
     return updateObject(state, {
       ingredients: updatedIngredients,
       totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName],
+      isBuilding: true,
     });
   } else {
     return state;
@@ -81,7 +85,8 @@ const fetchIngredientsSuccess = (state: BurgerBuilderState, action: FetchIngredi
   return updateObject(state, {
     ingredients: updatedIngredients,
     totalPrice: totalPrice,
-    error: false
+    error: false,
+    isBuilding: false,
   });
 };
 

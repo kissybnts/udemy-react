@@ -5,7 +5,10 @@ enum ActionTypes {
   AuthRequestStart = 'AuthRequestStart',
   AuthRequestSuccess = 'AuthRequestSuccess',
   AuthRequestFail = 'AuthRequestFail',
+
   AuthLogout = 'AuthLogout',
+
+  SetAuthRedirectPath = 'SetAuthRedirectPath',
 }
 
 export interface AuthAction {
@@ -50,3 +53,12 @@ export const createAuthRequestFailAction = (error: any): AuthRequestFailAction =
 export interface AuthLogoutAction extends AuthAction {}
 export const isAuthLogoutAction = (action: AuthAction): action is AuthLogoutAction => action.type === ActionTypes.AuthLogout;
 export const createAuthLogoutAction = (): AuthLogoutAction => ({ type: ActionTypes.AuthLogout });
+
+export interface SetAuthRedirectPathAction extends AuthAction {
+  path: string;
+}
+export const isSetAuthRedirectPathAction = (action: AuthAction): action is SetAuthRedirectPathAction => action.type === ActionTypes.SetAuthRedirectPath;
+export const createSetAuthRedirectPathAction = (path: string): SetAuthRedirectPathAction => ({
+  type: ActionTypes.SetAuthRedirectPath,
+  path: path,
+});

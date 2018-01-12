@@ -1,4 +1,7 @@
-import { AuthAction, isAuthLogoutAction, isAuthRequestFailAction, isAuthRequestStartAction, isAuthRequestSuccessAction } from '../actions/auth';
+import {
+  AuthAction, isAuthLogoutAction, isAuthRequestFailAction, isAuthRequestStartAction, isAuthRequestSuccessAction,
+  isSetAuthRedirectPathAction
+} from '../actions/auth';
 import { updateObject } from '../utility';
 
 export interface AuthState {
@@ -6,6 +9,7 @@ export interface AuthState {
   userId?: string;
   error?: any;
   loading: boolean;
+  redirectPath: string;
 }
 
 const initialState: AuthState = {
@@ -13,9 +17,16 @@ const initialState: AuthState = {
   userId: undefined,
   error: undefined,
   loading: false,
+  redirectPath: '/',
 };
 
 const reducer = (state: AuthState = initialState, action: AuthAction): AuthState => {
+  if (isSetAuthRedirectPathAction(action)) {
+    return updateObject(state, {
+      redirectPath: action.path,
+    });
+  }
+
   if (isAuthRequestSuccessAction(action)) {
     return updateObject(state, {
       idToken: action.data.idToken,

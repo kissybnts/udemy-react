@@ -16,6 +16,7 @@ import {
   createRemoveIngredientAction
 } from '../../store/actions/index';
 import { ReduxState } from '../../index';
+import { createSetAuthRedirectPathAction } from '../../store/actions/auth';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients?: Ingredients;
@@ -26,6 +27,7 @@ interface Props extends RouteComponentProps<{}> {
   onIngredientRemoved: (ingKey: string) => void;
   requestFetchingIngredients: () => void;
   onInitPurchase: () => void;
+  onSetAuthRedirectPath: (path: string) => void;
 }
 
 interface State {
@@ -52,6 +54,7 @@ class BurgerBuilder extends React.Component<Props, State> {
     if (this.props.isAuthenticated) {
       this.setState({ purchasing: true });
     } else {
+      this.props.onSetAuthRedirectPath('/checkout');
       this.props.history.push('/auth');
     }
   }
@@ -139,6 +142,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onIngredientRemoved: (ingKey: string) => dispatch(createRemoveIngredientAction(ingKey)),
   requestFetchingIngredients: () => dispatch(createFetchIngredientsAction()),
   onInitPurchase: () => dispatch(createPurchaseInitAction()),
+  onSetAuthRedirectPath: (path: string) => dispatch(createSetAuthRedirectPathAction(path)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
