@@ -1,69 +1,87 @@
 import { Action } from 'redux';
 import { Order, OrderData } from '../../containers/Orders/Orders';
 
-const PURCHASE_REQUEST = 'PURCHASE_REQUEST';
-const PURCHASE_REQUEST_START = 'PURCHASE_REQUEST_START';
-const PURCHASE_REQUEST_SUCCESS = 'PURCHASE_REQUEST_SUCCESS';
-const PURCHASE_REQUEST_FAIL = 'PURCHASE_REQUEST_FAIL';
-const PURCHASE_INIT = 'PURCHASE_INIT';
+enum ActionTypes {
+  PurchaseRequest = 'PurchaseRequest',
+  PurchaseRequestStart = 'PurchaseRequestStart',
+  PurchaseRequestSuccess = 'PurchaseRequestSuccess',
+  PurchaseRequestFail = 'PurchaseRequestFail',
+  PurchaseInit = 'PurchaseInit',
 
-const FETCH_ORDERS_REQUEST = 'FETCH_ORDERS_REQUEST';
-const FETCH_ORDERS_REQUEST_SUCCESS = 'FETCH_ORDERS_REQUEST_SUCCESS';
-const FETCH_ORDERS_REQUEST_FAIL = 'FETCH_ORDERS_REQUEST_FAIL';
-const FETCH_ORDERS_REQUEST_START = 'FETCH_ORDERS_REQUEST_START';
+  FetchOrdersRequest = 'FetchOrdersRequest',
+  FetchOrdersRequestStart = 'FetchOrdersRequestStart',
+  FetchOrdersRequestSuccess = 'FetchOrdersRequestSuccess',
+  FetchOrdersRequestFail = 'FetchOrdersRequestFail',
+}
 
-export interface PurchaseRequestAction extends Action {
+export interface OrderAction extends Action {
+  type: ActionTypes;
+}
+
+export interface PurchaseRequestAction extends OrderAction {
   orderData: OrderData;
   token: string;
 }
-export const isPurchaseRequestAction = (action: Action): action is PurchaseRequestAction => action.type === PURCHASE_REQUEST;
+export const isPurchaseRequestAction = (action: Action): action is PurchaseRequestAction => action.type === ActionTypes.PurchaseRequest;
 export const createPurchaseRequestAction = (orderData: OrderData, token: string): PurchaseRequestAction => ({
-  type: PURCHASE_REQUEST,
+  type: ActionTypes.PurchaseRequest,
   orderData: orderData, token: token,
 });
 
-export interface PurchaseRequestStartAction extends Action {}
-export const isPurchaseRequestStartAction = (action: Action): action is PurchaseRequestStartAction => action.type === PURCHASE_REQUEST_START;
-export const createPurchaseRequestStartAction = (): PurchaseRequestStartAction => ({ type: PURCHASE_REQUEST_START });
+export interface PurchaseRequestStartAction extends OrderAction {}
+export const isPurchaseRequestStartAction = (action: Action): action is PurchaseRequestStartAction => action.type === ActionTypes.PurchaseRequestStart;
+export const createPurchaseRequestStartAction = (): PurchaseRequestStartAction => ({ type: ActionTypes.PurchaseRequestStart });
 
-export interface PurchaseRequestSuccessAction extends Action {
+export interface PurchaseRequestSuccessAction extends OrderAction {
   id: string;
   orderData: OrderData;
 }
-export const isPurchaseRequestSuccessAction = (action: Action): action is PurchaseRequestSuccessAction => action.type === PURCHASE_REQUEST_SUCCESS;
-export const createPurchaseRequestSuccessAction = (id: string, orderData: OrderData): PurchaseRequestSuccessAction => ({ type: PURCHASE_REQUEST_SUCCESS, id: id, orderData: orderData });
+export const isPurchaseRequestSuccessAction = (action: Action): action is PurchaseRequestSuccessAction => action.type === ActionTypes.PurchaseRequestSuccess;
+export const createPurchaseRequestSuccessAction = (id: string, orderData: OrderData): PurchaseRequestSuccessAction => ({
+  type: ActionTypes.PurchaseRequestSuccess,
+  id: id, orderData: orderData
+});
 
-export interface PurchaseRequestFailAction extends Action {
+export interface PurchaseRequestFailAction extends OrderAction {
   error: any;
 }
-export const isPurchaseRequestFailAction = (action: Action): action is PurchaseRequestFailAction => action.type === PURCHASE_REQUEST_FAIL;
-export const createPurchaseRequestFailAction = (error: any): PurchaseRequestFailAction => ({ type: PURCHASE_REQUEST_FAIL, error: error });
+export const isPurchaseRequestFailAction = (action: Action): action is PurchaseRequestFailAction => action.type === ActionTypes.PurchaseRequestFail;
+export const createPurchaseRequestFailAction = (error: any): PurchaseRequestFailAction => ({
+  type: ActionTypes.PurchaseRequestFail,
+  error: error
+});
 
-export interface PurchaseInitAction extends Action {}
-export const isPurchaseInitAction = (action: Action): action is PurchaseInitAction => action.type === PURCHASE_INIT;
-export const createPurchaseInitAction = (): PurchaseInitAction => ({ type: PURCHASE_INIT });
+export interface PurchaseInitAction extends OrderAction {}
+export const isPurchaseInitAction = (action: Action): action is PurchaseInitAction => action.type === ActionTypes.PurchaseInit;
+export const createPurchaseInitAction = (): PurchaseInitAction => ({ type: ActionTypes.PurchaseInit });
 
-export interface FetchOrdersRequestAction extends Action {
+export interface FetchOrdersRequestAction extends OrderAction {
   token: string;
 }
-export const isFetchOrdersRequestAction = (action: Action): action is FetchOrdersRequestAction => action.type === FETCH_ORDERS_REQUEST;
+export const isFetchOrdersRequestAction = (action: Action): action is FetchOrdersRequestAction => action.type === ActionTypes.FetchOrdersRequest;
 export const createFetchOrdersRequestAction = (token: string): FetchOrdersRequestAction => ({
-  type: FETCH_ORDERS_REQUEST,
+  type: ActionTypes.FetchOrdersRequest,
   token: token,
 });
 
-export interface FetchOrdersRequestSuccessAction extends Action {
+export interface FetchOrdersRequestSuccessAction extends OrderAction {
   orders: Order[];
 }
-export const isFetchOrdersRequestSuccessAction = (action: Action): action is FetchOrdersRequestSuccessAction => action.type === FETCH_ORDERS_REQUEST_SUCCESS;
-export const createFetchOrdersRequestSuccessAction = (orders: Order[]): FetchOrdersRequestSuccessAction => ({ type: FETCH_ORDERS_REQUEST_SUCCESS, orders: orders });
+export const isFetchOrdersRequestSuccessAction = (action: Action): action is FetchOrdersRequestSuccessAction => action.type === ActionTypes.FetchOrdersRequestSuccess;
+export const createFetchOrdersRequestSuccessAction = (orders: Order[]): FetchOrdersRequestSuccessAction => ({
+  type: ActionTypes.FetchOrdersRequestSuccess,
+  orders: orders
+});
 
-export interface FetchOrdersRequestFailAction extends Action {
+export interface FetchOrdersRequestFailAction extends OrderAction {
   error: any;
 }
-export const isFetchOrdersRequestFailAction = (action: Action): action is FetchOrdersRequestFailAction => action.type === FETCH_ORDERS_REQUEST_FAIL;
-export const createFetchOrdersRequestFailAction = (error: any): FetchOrdersRequestFailAction => ({ type: FETCH_ORDERS_REQUEST_FAIL, error: error });
+export const isFetchOrdersRequestFailAction = (action: Action): action is FetchOrdersRequestFailAction => action.type === ActionTypes.FetchOrdersRequestFail;
+export const createFetchOrdersRequestFailAction = (error: any): FetchOrdersRequestFailAction => ({
+  type: ActionTypes.FetchOrdersRequestFail,
+  error: error
+});
 
-export interface FetchOrdersRequestStartAction extends Action {}
-export const isFetchOrdersRequestStartAction = (action: Action): action is FetchOrdersRequestStartAction => action.type === FETCH_ORDERS_REQUEST_START;
-export const createFetchOrdersRequestStartAction = (): FetchOrdersRequestStartAction => ({ type: FETCH_ORDERS_REQUEST_START });
+export interface FetchOrdersRequestStartAction extends OrderAction {}
+export const isFetchOrdersRequestStartAction = (action: Action): action is FetchOrdersRequestStartAction => action.type === ActionTypes.FetchOrdersRequestStart;
+export const createFetchOrdersRequestStartAction = (): FetchOrdersRequestStartAction => ({ type: ActionTypes.FetchOrdersRequestStart });
