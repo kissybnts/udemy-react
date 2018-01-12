@@ -57,11 +57,13 @@ export const createPurchaseInitAction = (): PurchaseInitAction => ({ type: Actio
 
 export interface FetchOrdersRequestAction extends OrderAction {
   token: string;
+  userId: string;
 }
 export const isFetchOrdersRequestAction = (action: Action): action is FetchOrdersRequestAction => action.type === ActionTypes.FetchOrdersRequest;
-export const createFetchOrdersRequestAction = (token: string): FetchOrdersRequestAction => ({
+export const createFetchOrdersRequestAction = (token: string, userId: string): FetchOrdersRequestAction => ({
   type: ActionTypes.FetchOrdersRequest,
   token: token,
+  userId: userId,
 });
 
 export interface FetchOrdersRequestSuccessAction extends OrderAction {

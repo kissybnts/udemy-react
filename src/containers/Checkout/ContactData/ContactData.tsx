@@ -19,6 +19,7 @@ interface Props extends RouteComponentProps<{}> {
   totalPrice: number;
   loading: boolean;
   token: string;
+  userId: string;
   onOrderBurger: (orderData: any, token: string) => void;
 }
 
@@ -165,7 +166,8 @@ class ContactData extends React.Component<Props, State> {
         email: formData['email'],
         name: formData['name']
       },
-      deliveryMethod: formData['deliveryMethod']
+      deliveryMethod: formData['deliveryMethod'],
+      userId: this.props.userId,
     };
 
     this.props.onOrderBurger(data, this.props.token);
@@ -255,6 +257,7 @@ const mapStateToProps = (state: ReduxState) => ({
   totalPrice: state.burgerBuilder.totalPrice,
   loading: state.order.loading,
   token: state.auth.idToken,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

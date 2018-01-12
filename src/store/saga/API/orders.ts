@@ -26,7 +26,7 @@ export function* handleFetchOrdersRequest() {
   while (true) {
     const action: FetchOrdersRequestAction = yield take(isFetchOrdersRequestAction);
     yield put(createFetchOrdersRequestStartAction());
-    const response = yield call(axios.get, `/orders.json?auth=${action.token || ''}`);
+    const response = yield call(axios.get, `/orders.json?auth=${action.token || ''}&orderBy="userId"&equalTo="${action.userId}"`);
     if (response.status && response.status.toString().startsWith('2')) {
       const orders: Order[] = response.data !== null ? Object.keys(response.data).map(key => {
         return {

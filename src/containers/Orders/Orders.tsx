@@ -15,7 +15,8 @@ interface Props extends RouteComponentProps<{}> {
   orders: Order[];
   loading: boolean;
   token: string;
-  onInitOrders: (token: string) => void;
+  userId: string;
+  onInitOrders: (token: string, userId: string) => void;
 }
 
 export interface Order extends OrderData {
@@ -34,11 +35,12 @@ export interface OrderData {
   ingredients: Ingredients;
   totalPrice: number;
   deliveryMethod: string;
+  userId: string;
 }
 
 class Orders extends React.Component<Props, {}> {
   componentDidMount() {
-    this.props.onInitOrders(this.props.token);
+    this.props.onInitOrders(this.props.token, this.props.userId);
   }
 
   render() {
@@ -60,10 +62,11 @@ const mapStateToProps = (state: ReduxState) => ({
   orders: state.order.orders,
   loading: state.order.loading,
   token: state.auth.idToken,
+  userId: state.auth.userId,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  onInitOrders: (token: string) => dispatch(createFetchOrdersRequestAction(token))
+  onInitOrders: (token: string, userId: string) => dispatch(createFetchOrdersRequestAction(token, userId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));

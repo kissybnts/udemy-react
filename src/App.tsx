@@ -10,7 +10,7 @@ import { Action, Dispatch } from 'redux';
 import { createAutomaticallyAuthAction } from './store/actions/auth';
 import { connect } from 'react-redux';
 
-interface Props extends RouteComponentProps<{}>{
+interface Props extends RouteComponentProps<{}> {
   onTryAutomaticallyLogin: () => void;
 }
 
