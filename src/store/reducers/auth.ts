@@ -3,7 +3,7 @@ import {
   isAutomaticallyAuthSuccessAction,
   isSetAuthRedirectPathAction
 } from '../actions/auth';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 export interface AuthState {
   idToken?: string;

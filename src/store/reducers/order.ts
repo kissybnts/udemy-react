@@ -6,7 +6,7 @@ import {
   isPurchaseRequestFailAction, isPurchaseRequestStartAction,
   isPurchaseRequestSuccessAction, PurchaseRequestSuccessAction
 } from '../actions';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 export interface OrderState {
   orders: Order[];

@@ -10,6 +10,7 @@ import { AuthAction, createAuthRequestAction, createSetAuthRedirectPathAction } 
 import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { ReduxState } from '../../index';
+import { updateObject } from '../../shared/utility';
 
 interface Props extends RouteComponentProps<{}> {
   loading: boolean;
@@ -74,17 +75,15 @@ class Auth extends React.Component<Props, State> {
 
   inputChangedHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
-    const updatedForm = {
-      ...this.state.form,
-      [name]: {
-        ...this.state.form[name],
+    const updatedForm: FormElements = updateObject(this.state.form, {
+      [name]: updateObject(this.state.form[name], {
         value: event.target.value,
         isValid: this.checkValidity(event.target.value, this.state.form[name].validation),
         isTouched: true,
-      }
-    };
+      }),
+    });
 
-    this.setState({form: updatedForm});
+    this.setState({ form: updatedForm });
   }
 
   authRequestHandler = (event: FormEvent<HTMLFormElement>) => {

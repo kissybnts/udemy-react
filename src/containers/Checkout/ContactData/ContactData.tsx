@@ -6,13 +6,14 @@ import { Ingredients } from '../../BurgerBuilder/BurgerBuilder';
 import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input, { InputType, InputTypes } from '../../../components/UI/Input/Input';
-import { FormEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { createPurchaseRequestAction } from '../../../store/actions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { OrderData } from '../../Orders/Orders';
 import { ReduxState } from '../../../index';
+import { updateObject } from '../../../shared/utility';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -173,13 +174,14 @@ class ContactData extends React.Component<Props, State> {
     this.props.onOrderBurger(data, this.props.token);
   }
 
-  inputChangedHandler = (event: Event, identifier: string) => {
-    const updatedForm = { ...this.state.form };
-    const updatedElement: FormElementInfo = { ...updatedForm[identifier] };
-    updatedElement.value = event.target['value'];
-    updatedElement.isValid = this.checkValidity(updatedElement.value, updatedElement.validation);
-    updatedElement.isTouched = true;
-    updatedForm[identifier] = updatedElement;
+  inputChangedHandler = (event: ChangeEvent<HTMLInputElement>, identifier: string) => {
+    const updatedForm: Form = updateObject(this.state.form, {
+      [identifier]: updateObject(this.state.form[identifier], {
+        value: event.target.value,
+        isValid: this.checkValidity(event.target.value, this.state.form[identifier].validation),
+        isTouched: true,
+      }),
+    });
     const formIsValid = this.checkFormValidity(updatedForm);
     this.setState({ form: updatedForm, formIsValid: formIsValid });
   }

@@ -4,7 +4,7 @@ import {
   isRemoveIngredientAction, RemoveIngredientAction
 } from '../actions';
 import { Action } from 'redux';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 export interface BurgerBuilderState {
   ingredients?: Ingredients;
@@ -35,12 +35,10 @@ const addIngredient = (state: BurgerBuilderState, action: AddIngredientAction): 
       return state;
     }
 
-    const updatedIngredients: Ingredients = updateObject(state.ingredients, {
-      [action.ingredientName]: ingredients[action.ingredientName] + 1
-    });
-
     return updateObject(state, {
-      ingredients: updatedIngredients,
+      ingredients: updateObject(state.ingredients, {
+        [action.ingredientName]: ingredients[action.ingredientName] + 1
+      }),
       totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
       isBuilding: true,
     });
@@ -57,12 +55,10 @@ const removeIngredient = (state: BurgerBuilderState, action: RemoveIngredientAct
       return state;
     }
 
-    const updatedIngredients: Ingredients = updateObject(state.ingredients, {
-      [action.ingredientName]: ingredients[action.ingredientName] - 1
-    });
-
     return updateObject(state, {
-      ingredients: updatedIngredients,
+      ingredients: updateObject(state.ingredients, {
+        [action.ingredientName]: ingredients[action.ingredientName] - 1
+      }),
       totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName],
       isBuilding: true,
     });
