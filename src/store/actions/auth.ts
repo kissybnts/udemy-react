@@ -6,6 +6,9 @@ enum ActionTypes {
   AuthRequestSuccess = 'AuthRequestSuccess',
   AuthRequestFail = 'AuthRequestFail',
 
+  AutomaticallyAuth = 'AutomaticallyAuth',
+  AutomaticallyAuthSuccess = 'AutomaticallyAuthSuccess',
+
   AuthLogout = 'AuthLogout',
 
   SetAuthRedirectPath = 'SetAuthRedirectPath',
@@ -48,6 +51,21 @@ export const isAuthRequestFailAction = (action: AuthAction): action is AuthReque
 export const createAuthRequestFailAction = (error: any): AuthRequestFailAction => ({
   type: ActionTypes.AuthRequestFail,
   error: error,
+});
+
+export interface AutomaticallyAuthAction extends AuthAction {}
+export const isAutomaticallyAuthAction = (action: AuthAction): action is AutomaticallyAuthAction => action.type === ActionTypes.AutomaticallyAuth;
+export const createAutomaticallyAuthAction = (): AutomaticallyAuthAction => ({ type: ActionTypes.AutomaticallyAuth });
+
+export interface AutomaticallyAuthSuccessAction extends AuthAction {
+  token: string;
+  userId: string;
+}
+export const isAutomaticallyAuthSuccessAction = (action: AuthAction): action is AutomaticallyAuthSuccessAction => action.type === ActionTypes.AutomaticallyAuthSuccess;
+export const createAutomaticallyAuthSuccessAction = (token: string, userId: string): AutomaticallyAuthSuccessAction => ({
+  type: ActionTypes.AutomaticallyAuthSuccess,
+  token: token,
+  userId: userId,
 });
 
 export interface AuthLogoutAction extends AuthAction {}

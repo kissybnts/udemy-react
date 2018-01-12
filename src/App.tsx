@@ -6,8 +6,19 @@ import { Route, Switch } from 'react-router';
 import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
+import { Action, Dispatch } from 'redux';
+import { createAutomaticallyAuthAction } from './store/actions/auth';
+import { connect } from 'react-redux';
 
-class App extends React.Component {
+interface Props {
+  onTryAutomaticallyLogin: () => void;
+}
+
+class App extends React.Component<Props> {
+  componentDidMount() {
+    this.props.onTryAutomaticallyLogin();
+  }
+
   render() {
     return (
       <div>
@@ -25,4 +36,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+  onTryAutomaticallyLogin: () => { dispatch(createAutomaticallyAuthAction()); },
+});
+
+export default connect(null, mapDispatchToProps)(App);

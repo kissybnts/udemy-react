@@ -1,7 +1,8 @@
 import { call, fork, put, take } from 'redux-saga/effects';
 import {
   AuthRequestAction, createAuthLogoutAction, createAuthRequestFailAction, createAuthRequestStartAction, createAuthRequestSuccessAction,
-  isAuthRequestAction
+  createAutomaticallyAuthSuccessAction,
+  isAuthRequestAction, isAutomaticallyAuthAction
 } from '../../actions/auth';
 import axios from 'axios';
 import { delay } from 'redux-saga';
@@ -35,6 +36,11 @@ export function* handleAuthRequest() {
         requestData);
 
       if (response.status && response.status.toString().startsWith('2')) {
+        const expirationDate = new Date(new Date().getTime() + (parseInt(response.data.expiresIn, 10) * 1000));
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate.toString());
+        localStorage.setItem('userId', response.data.localId);
+
         yield put(createAuthRequestSuccessAction(response.data));
         if (task && task.isRunning()) {
           task.cancel();
@@ -50,4 +56,25 @@ export function* handleAuthRequest() {
 function* handleReserveLogout(seconds: number) {
   yield call(delay, seconds * 1000);
   yield put(createAuthLogoutAction());
+}
+
+export function* handleCheckAuthState() {
+  while (true) {
+    yield take(isAutomaticallyAuthAction);
+    const token = localStorage.getItem('token');
+    const expiration = localStorage.getItem('expirationDate');
+    const userId = localStorage.getItem('userId');
+    if (!token || !expiration || !userId) {
+      yield put(createAuthLogoutAction());
+    } else {
+      const expirationDate = new Date(expiration);
+      const now = new Date();
+      if (expirationDate > now) {
+        yield put(createAutomaticallyAuthSuccessAction(token, userId));
+        yield fork(handleReserveLogout, (expirationDate.getSeconds() - now.getSeconds()));
+      } else {
+        yield put(createAuthLogoutAction());
+      }
+    }
+  }
 }
