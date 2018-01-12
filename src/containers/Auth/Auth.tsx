@@ -10,7 +10,7 @@ import { AuthAction, createAuthRequestAction, createSetAuthRedirectPathAction } 
 import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { ReduxState } from '../../index';
-import { updateObject } from '../../shared/utility';
+import { checkValidity, updateObject } from '../../shared/utility';
 
 interface Props extends RouteComponentProps<{}> {
   loading: boolean;
@@ -78,7 +78,7 @@ class Auth extends React.Component<Props, State> {
     const updatedForm: FormElements = updateObject(this.state.form, {
       [name]: updateObject(this.state.form[name], {
         value: event.target.value,
-        isValid: this.checkValidity(event.target.value, this.state.form[name].validation),
+        isValid: checkValidity(event.target.value, this.state.form[name].validation),
         isTouched: true,
       }),
     });
@@ -140,31 +140,6 @@ class Auth extends React.Component<Props, State> {
         </Button>
       </div>
     );
-  }
-
-  // TODO extract as common method
-  private checkValidity(value: string, rule: ValidationRule): boolean {
-    let isValid = true;
-
-    if (rule.required && isValid) {
-      isValid = value.trim() !== '';
-    }
-
-    if (rule.maxLength && isValid) {
-      isValid = value.length <= rule.maxLength;
-    }
-
-    if (rule.minLength && isValid) {
-      isValid = value.length >= rule.minLength;
-    }
-
-    if (rule.isEmail && isValid) {
-      const pattern =
-        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value);
-    }
-
-    return isValid;
   }
 }
 

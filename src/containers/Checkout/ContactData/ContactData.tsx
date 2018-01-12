@@ -13,7 +13,7 @@ import { createPurchaseRequestAction } from '../../../store/actions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { OrderData } from '../../Orders/Orders';
 import { ReduxState } from '../../../index';
-import { updateObject } from '../../../shared/utility';
+import { checkValidity, updateObject } from '../../../shared/utility';
 
 interface Props extends RouteComponentProps<{}> {
   ingredients: Ingredients;
@@ -178,7 +178,7 @@ class ContactData extends React.Component<Props, State> {
     const updatedForm: Form = updateObject(this.state.form, {
       [identifier]: updateObject(this.state.form[identifier], {
         value: event.target.value,
-        isValid: this.checkValidity(event.target.value, this.state.form[identifier].validation),
+        isValid: checkValidity(event.target.value, this.state.form[identifier].validation),
         isTouched: true,
       }),
     });
@@ -216,30 +216,6 @@ class ContactData extends React.Component<Props, State> {
         {form}
       </div>
     );
-  }
-
-  private checkValidity(value: string, rule: ValidationRule): boolean {
-    let isValid = true;
-
-    if (rule.required && isValid) {
-      isValid = value.trim() !== '';
-    }
-
-    if (rule.maxLength && isValid) {
-      isValid = value.length <= rule.maxLength;
-    }
-
-    if (rule.minLength && isValid) {
-      isValid = value.length >= rule.minLength;
-    }
-
-    if (rule.isEmail && isValid) {
-      const pattern =
-        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value);
-    }
-
-    return isValid;
   }
 
   private checkFormValidity(updatedForm: Form): boolean {
