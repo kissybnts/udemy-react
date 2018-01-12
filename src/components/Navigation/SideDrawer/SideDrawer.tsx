@@ -17,7 +17,7 @@ const sideDrawer: React.SFC<Props> = props => {
   return (
     <React.Fragment>
       <Backdrop show={props.open} clicked={props.closed}/>
-      <div className={classes.join(' ')}>
+      <div className={classes.join(' ')} onClick={props.closed}>
         <div className={cssClasses.Logo}>
           <Logo/>
         </div>
