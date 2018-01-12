@@ -10,6 +10,7 @@ interface Props {
   price: number;
   purchasable: boolean;
   ordered: () => void;
+  isAuthenticated: boolean;
 }
 
 interface Control {
@@ -38,7 +39,8 @@ const buildControls: React.SFC<Props> = props => (
       className={cssClasses.OrderButton}
       disabled={!props.purchasable}
       onClick={props.ordered}
-    >ORDER NOW
+    >
+      {props.isAuthenticated ? 'Order now' : 'Sign up to order'}
     </button>
   </div>
 );

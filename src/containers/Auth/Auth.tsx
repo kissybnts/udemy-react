@@ -4,7 +4,7 @@ import { FormElementInfo, ValidationRule } from '../Checkout/ContactData/Contact
 import Input, { InputTypes } from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as cssClasses from './Auth.css';
-import { RouteComponentProps } from 'react-router';
+import { Redirect, RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { AuthAction, createAuthRequestAction } from '../../store/actions/auth';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import { ReduxState } from '../../index';
 interface Props extends RouteComponentProps<{}> {
   loading: boolean;
   error: any;
+  isAuthenticated: boolean;
   onAuth: (email: string, password: string, isSignUp: boolean) => void;
 }
 
@@ -91,6 +92,10 @@ class Auth extends React.Component<Props, State> {
   }
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to={'/'}/>;
+    }
+
     if (this.props.loading) {
       return (<Spinner/>);
     }
@@ -158,6 +163,7 @@ class Auth extends React.Component<Props, State> {
 const mapStateToProps = (state: ReduxState) => ({
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.idToken !== undefined,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AuthAction>) => ({

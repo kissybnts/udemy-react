@@ -21,6 +21,7 @@ interface Props extends RouteComponentProps<{}> {
   ingredients?: Ingredients;
   totalPrice: number;
   error: boolean;
+  isAuthenticated: boolean;
   onIngredientAdded: (ingKey: string) => void;
   onIngredientRemoved: (ingKey: string) => void;
   requestFetchingIngredients: () => void;
@@ -48,7 +49,11 @@ class BurgerBuilder extends React.Component<Props, State> {
   }
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.history.push('/auth');
+    }
   }
 
   purchaseCancelHandler = () => {
@@ -85,6 +90,7 @@ class BurgerBuilder extends React.Component<Props, State> {
             price={this.props.totalPrice}
             purchasable={this.canPurchase()}
             ordered={this.purchaseHandler}
+            isAuthenticated={this.props.isAuthenticated}
           />
         </React.Fragment>
       );
@@ -125,6 +131,7 @@ const mapStateToProps = (state: ReduxState) => ({
   ingredients: state.burgerBuilder.ingredients,
   totalPrice: state.burgerBuilder.totalPrice,
   error: state.burgerBuilder.error,
+  isAuthenticated: state.auth.idToken !== undefined,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
