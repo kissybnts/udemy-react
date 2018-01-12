@@ -24,6 +24,7 @@ const initialState: AuthState = {
 const authLogout = (state: AuthState, action: AuthLogoutAction): AuthState => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
 
   return updateObject(state, {
     idToken: undefined,

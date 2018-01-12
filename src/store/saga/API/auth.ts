@@ -45,7 +45,7 @@ export function* handleAuthRequest() {
         if (task && task.isRunning()) {
           task.cancel();
         }
-        task = yield fork(handleReserveLogout, parseInt(response.data.expiresIn, 10));
+        task = yield fork(handleReserveLogout, parseInt(response.data.expiresIn, 10) * 1000);
       }
     } catch (err) {
       yield put(createAuthRequestFailAction(err.response.data.error));
@@ -53,8 +53,8 @@ export function* handleAuthRequest() {
   }
 }
 
-function* handleReserveLogout(seconds: number) {
-  yield call(delay, seconds * 1000);
+function* handleReserveLogout(milliSeconds: number) {
+  yield call(delay, milliSeconds);
   yield put(createAuthLogoutAction());
 }
 
@@ -71,7 +71,7 @@ export function* handleCheckAuthState() {
       const now = new Date();
       if (expirationDate > now) {
         yield put(createAutomaticallyAuthSuccessAction(token, userId));
-        yield fork(handleReserveLogout, (expirationDate.getSeconds() - now.getSeconds()));
+        yield fork(handleReserveLogout, (expirationDate.getTime() - now.getTime()));
       } else {
         yield put(createAuthLogoutAction());
       }

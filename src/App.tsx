@@ -2,7 +2,7 @@ import * as React from 'react';
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
-import { Route, Switch } from 'react-router';
+import { Route, RouteComponentProps, Switch, withRouter } from 'react-router';
 import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
@@ -10,7 +10,7 @@ import { Action, Dispatch } from 'redux';
 import { createAutomaticallyAuthAction } from './store/actions/auth';
 import { connect } from 'react-redux';
 
-interface Props {
+interface Props extends RouteComponentProps<{}>{
   onTryAutomaticallyLogin: () => void;
 }
 
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
   onTryAutomaticallyLogin: () => { dispatch(createAutomaticallyAuthAction()); },
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default withRouter(connect(null, mapDispatchToProps)(App));
