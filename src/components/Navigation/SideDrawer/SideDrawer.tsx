@@ -5,6 +5,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 
 interface Props {
+  isAuthenticated: boolean;
   open: boolean;
   closed: () => void;
 }
@@ -21,7 +22,7 @@ const sideDrawer: React.SFC<Props> = props => {
           <Logo/>
         </div>
         <nav>
-          <NavigationItems/>
+          <NavigationItems isAuthenticated={props.isAuthenticated}/>
         </nav>
       </div>
     </React.Fragment>

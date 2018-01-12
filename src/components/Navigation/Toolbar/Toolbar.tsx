@@ -5,6 +5,7 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 
 interface Props {
+  isAuthenticated: boolean;
   drawerToggleClicked: () => void;
 }
 
@@ -15,7 +16,7 @@ const toolbar: React.SFC<Props> = props => (
       <Logo/>
     </div>
     <nav className={cssClasses.DesktopOnly}>
-      <NavigationItems/>
+      <NavigationItems isAuthenticated={props.isAuthenticated}/>
     </nav>
   </header>
 );
