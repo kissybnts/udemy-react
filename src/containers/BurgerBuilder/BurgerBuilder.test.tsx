@@ -28,7 +28,7 @@ describe('<BurgerBuilder/>', () => {
   });
 
   it('should render <BuildControls/> if ingredients are set', () => {
-    wrapper.setProps({ ingredients: { Salad: 1, Bacon: 1, Meet: 1, Cheese: 1 } });
+    wrapper.setProps({ ingredients: { Salad: 1, Bacon: 1, Meat: 1, Cheese: 1 } });
     expect(wrapper.find(BuildControls)).toHaveLength(1);
   });
 });
