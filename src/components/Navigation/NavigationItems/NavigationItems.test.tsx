@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { configure, shallow } from 'enzyme';
+import { configure, shallow, ShallowWrapper } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import NavigationItems from './NavigationItems';
 import NavigationItem from './NavigationItem/NavigationItem';
@@ -9,8 +9,18 @@ configure({
 });
 
 describe('<NavigationItems />', () => {
+  let wrapper: ShallowWrapper;
+
+  beforeEach(() => {
+    wrapper = shallow(<NavigationItems isAuthenticated={false}/>);
+  });
+
   it('should render two <NavigationItem/> elements if not authenticated', () => {
-    const wrapper = shallow(<NavigationItems isAuthenticated={false} />);
     expect(wrapper.find(NavigationItem)).toHaveLength(2);
+  });
+
+  it('should render three <NavigationItem/> elements if authenticated', () => {
+    wrapper.setProps({ isAuthenticated: true });
+    expect(wrapper.find(NavigationItem)).toHaveLength(3);
   });
 });
