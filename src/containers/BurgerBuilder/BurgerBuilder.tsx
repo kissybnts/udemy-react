@@ -41,7 +41,7 @@ export interface Ingredients {
   Meat: number;
 }
 
-class BurgerBuilder extends React.Component<Props, State> {
+export class BurgerBuilder extends React.Component<Props, State> {
   state = {
     purchasing: false
   };
